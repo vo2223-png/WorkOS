@@ -2090,7 +2090,7 @@
             </div>
             <div style="display: flex; gap: 8px; align-items: flex-end;">
               <textarea data-aiinput="1" ref="{{ aiInputRef }}" onKeyDown="{{ aiKey }}" rows="1" aria-label="Nachricht an die AI" placeholder="Frag etwas oder beschreibe, was geplant werden soll …" style="flex: 1; min-width: 0; box-sizing: border-box; resize: none; field-sizing: content; min-height: 42px; max-height: 160px; border: 1px solid var(--c-hair); border-radius: 14px; background: var(--c-input); color: var(--c-ink); padding: 10px 14px; font-size: 1em; line-height: 1.45; font-family: inherit; outline: none;" style-focus="outline: none;"></textarea>
-              <button class="om-cta ai-send" onClick="{{ aiSendNow }}" disabled="{{ aiCantSend }}" style="display: flex; align-items: center; gap: 7px; flex: none; border: none; background: var(--c-accent); color: var(--c-on-accent); border-radius: 999px; padding: 11px 18px; font-size: var(--t-sm); font-weight: 700; opacity: {{ aiSendOpacity }}; cursor: pointer; outline: none;" style-focus="outline: none;"><span>Senden</span><svg class="ai-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+              <button class="om-cta ai-send" type="button" onClick="{{ aiSendNow }}" aria-disabled="{{ aiCantSend }}" style="display: flex; align-items: center; gap: 7px; flex: none; border: none; background: var(--c-accent); color: var(--c-on-accent); border-radius: 999px; padding: 11px 18px; font-size: var(--t-sm); font-weight: 700; opacity: {{ aiSendOpacity }}; cursor: pointer; outline: none;" style-focus="outline: none;"><span>Senden</span><svg class="ai-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
             </div>
           </div>
         </div>
@@ -5544,8 +5544,15 @@ class Component extends DCLogic {
   }
   async aiSend(textIn, opt) {
     const lib = !!(opt && opt.lib);
-    const text = String(textIn != null ? textIn : ((lib ? this.state.libDraft : this.state.aiDraft) || '')).trim();
-    if (!text || this.state.aiBusy) return;
+    /* the composer is uncontrolled, so the field itself is the source of truth —
+       state can lag a keystroke (or an autofill / dictation that fires no input event) */
+    const el = !lib && textIn == null ? document.querySelector('[data-aiinput]') : null;
+    const text = String(textIn != null ? textIn : (el ? el.value : ((lib ? this.state.libDraft : this.state.aiDraft) || ''))).trim();
+    if (!text) { if (el) el.focus(); return; }
+    /* a request that never came back (app suspended, network dropped) must not block the composer forever */
+    if (this.state.aiBusy && Date.now() - (this._aiBusySince || 0) < 90000) return;
+    this._aiBusySince = Date.now();
+    if (el) { el.value = ''; this._aiLastInput = ''; }
     const now = Date.now();
     let chats = (this.state.aiChats || []).slice();
     let chat = lib ? (chats.find(c => c.id === this.state.libChat) || null) : this.aiChat();
