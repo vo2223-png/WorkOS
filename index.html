@@ -3762,6 +3762,13 @@
 
     </div>
   </main>
+  <sc-if value="{{ hasAppErr }}" hint-placeholder-val="{{ false }}">
+    <div role="alert" class="om-rise" style="position: fixed; left: 50%; top: calc(16px + env(safe-area-inset-top)); transform: translateX(-50%); z-index: 95; width: min(560px, calc(100vw - 32px)); display: flex; align-items: flex-start; gap: 12px; padding: 12px 12px 12px 16px; border-radius: 16px; background: var(--c-warn); color: var(--c-warn-ink); box-shadow: 0 18px 40px -16px rgba(0,0,0,.55);">
+      <span style="flex: 1; min-width: 0; font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; user-select: text;">{{ appErr }}</span>
+      <button onClick="{{ appErrCopy }}" style="flex: none; border: none; background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; border-radius: 999px; padding: 5px 11px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;">Kopieren</button>
+      <button onClick="{{ appErrClose }}" aria-label="Schliessen" style="flex: none; width: 26px; height: 26px; border: none; background: transparent; color: inherit; border-radius: 999px; font-size: 16px; line-height: 1; cursor: pointer;">×</button>
+    </div>
+  </sc-if>
   <sc-if value="{{ netOffline }}" hint-placeholder-val="{{ false }}">
     <div role="status" aria-live="polite" class="om-rise" style="position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 80; display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 9px 16px 9px 12px; border-radius: 999px; background: var(--c-glass); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: inset 0 1px 0 var(--c-gloss), 0 14px 30px -14px rgba(0,0,0,.55); color: var(--c-ink); pointer-events: none;">
       <span style="flex: none; width: 8px; height: 8px; border-radius: 999px; background: var(--c-warn-ink); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-warn-ink) 22%, transparent); animation: om-dvpulse 1.8s ease-in-out infinite;"></span>
@@ -4436,7 +4443,7 @@ class Component extends DCLogic {
        fresh-install seed is written straight into tasks, not a separate list */
     tasks: WEEKLY.map(([id, day, text, note]) => ({ id, text, note, day, week: '', routine: true, done: false, tags: [], icon: '', lucide: 'file-text', due: '', repeat: 'none', project: '' })),
     guide: guideSeed(), guideEditSec: null, guideCardOpen: null, gStepDraft: {}, guideHandover: false, gcAdd: false, gcDraft: '', gcRename: null, gcFresh: null, guideView: 'board', guideOpen: {}, projColsX: [], pcAdd: false, pcDraft: '', pcRename: null, pcFresh: null, gen: null, genFields: {},
-    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, netOffline: false, netBack: false, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
+    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, netOffline: false, netBack: false, appErr: null, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
     projects: [], notes: [], members: [], tags: DEFAULT_TAGS.slice(), highlightNote: null, cleanings: [], clCols: [], clOpen: null, clConfirm: null, clOver: null, clStepDraft: {}, clFilterM: '', clFilterP: '', highlightClean: null, aiChats: [], aiActive: null, aiDraft: '', aiBusy: false, aiError: null, aiPanel: null, aiEdit: null, aiMenu: null, aiRenaming: null, aiNotePick: false,
     machines: MACHINES.map((name, i) => ({ id: 'm' + i, name, faults: '', cleaning: '', note: '', image: false })),
     weekly: [], extraDays: [], newColOpen: false, newColDraft: '',
@@ -4647,6 +4654,9 @@ class Component extends DCLogic {
       window.addEventListener('focus', this._dvFocus);
       this._dvOffline = () => { this.setState({ netOffline: true, netBack: false }); this.dvStatus('off', 'Offline · Änderungen werden lokal gespeichert.'); };
       window.addEventListener('offline', this._dvOffline);
+      this._appErr = (ev) => { const r = ev.reason || ev.error || ev.message; const t = String((r && (r.stack || r.message)) || r || ''); if (!t || /ResizeObserver/.test(t)) return; this.setState({ appErr: 'Fehler: ' + t.split('\n').slice(0, 2).join(' · ') }); };
+      window.addEventListener('unhandledrejection', this._appErr);
+      window.addEventListener('error', this._appErr);
     }
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
@@ -5542,7 +5552,16 @@ class Component extends DCLogic {
     if (src.type === 'routine' && (x = f(s.routine))) return { kind: 'Routine', label: x.text, go: () => this.save({ tab: 'today', query: '' }) };
     return null;
   }
+  /* any failure in the send path is shown instead of dying as a silent promise rejection */
   async aiSend(textIn, opt) {
+    try { return await this.aiSendInner(textIn, opt); }
+    catch (e) {
+      this._aiBusySince = 0;
+      this.setState({ aiBusy: false, aiPhase: '', appErr: 'Senden fehlgeschlagen: ' + String((e && (e.stack || e.message)) || e).split('\n').slice(0, 2).join(' · ') });
+    }
+  }
+
+  async aiSendInner(textIn, opt) {
     const lib = !!(opt && opt.lib);
     /* the composer is uncontrolled, so the field itself is the source of truth —
        state can lag a keystroke (or an autofill / dictation that fires no input event) */
@@ -6574,7 +6593,7 @@ class Component extends DCLogic {
         el.addEventListener('input', (e) => { this._aiLastInput = e.target.value; this.setState({ aiDraft: e.target.value }); });
       }),
       aiKey: (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); this.aiSend(); } },
-      aiSendNow: () => this.aiSend(), aiCantSend: !!s.aiBusy || !(s.aiDraft || '').trim(), aiSendOpacity: (!!s.aiBusy || !(s.aiDraft || '').trim()) ? '.45' : '1',
+      aiSendNow: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ appErr: null }); this.aiSend(); }, aiCantSend: !!s.aiBusy || !(s.aiDraft || '').trim(), aiSendOpacity: (!!s.aiBusy || !(s.aiDraft || '').trim()) ? '.45' : '1',
       aiHasPanel: !!prop, aiPanelFlag: prop ? '1' : '0',
       aiPanelSub: prop ? prop.items.length + (prop.items.length === 1 ? ' Änderung' : ' Änderungen') + ' · antippen zum Bearbeiten' : '',
       aiItems: items, aiApply: () => this.aiApply(), aiCantApply: !nApply, aiApplyOpacity: nApply ? '1' : '.45',
@@ -9125,6 +9144,8 @@ class Component extends DCLogic {
       importData: (e) => this.importFile(e),
       ...this.aiVals(),
       ...this.dvVals(),
+      appErr: s.appErr || '', hasAppErr: !!s.appErr, appErrClose: () => this.setState({ appErr: null }),
+      appErrCopy: () => { try { navigator.clipboard.writeText(this.state.appErr || ''); } catch (e) {} },
       netOffline: !!s.netOffline, netBack: !!s.netBack && !s.netOffline,
       netSub: (s.drive || {}).connected ? 'Änderungen werden lokal gespeichert und synchronisiert, sobald du online bist.' : 'Änderungen werden in diesem Browser gespeichert.',
       dataStatus: s.dataStatus,
