@@ -173,7 +173,7 @@
   .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-soft); animation: ai-dot 1.1s infinite ease-in-out; }
   .ai-dot:nth-child(2) { animation-delay: .15s; } .ai-dot:nth-child(3) { animation-delay: .3s; }
   @keyframes ai-sheet { from { transform: translateY(100%); } to { transform: none; } }
-  /* KI motion: bubbles grow from the side they belong to, answers settle up, lists cascade once on mount */
+  /* AI motion: bubbles grow from the side they belong to, answers settle up, lists cascade once on mount */
   @keyframes ai-user { from { opacity: 0; transform: translate3d(12px, 8px, 0) scale(.96); } to { opacity: 1; transform: none; } }
   @keyframes ai-panelin { from { opacity: 0; transform: translate3d(16px, 0, 0); } to { opacity: 1; transform: none; } }
   @keyframes ai-stamp { 0% { opacity: 0; transform: scale(1.18); } 60% { opacity: 1; transform: scale(.97); } 100% { opacity: 1; transform: none; } }
@@ -195,7 +195,7 @@
   @keyframes ai-phase { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
   .ai-phase > span { display: inline-block; animation: ai-phase .3s var(--e-soft) both; }
   @media (prefers-reduced-motion: reduce) { .ai-phase > span { animation: none; } .ai-acts, .ai-ctx { transition: none; } }
-  /* delight: the thinking line narrates what the KI is doing, stepping once through and resting on the last phrase */
+  /* delight: the thinking line narrates what the AI is doing, stepping once through and resting on the last phrase */
   .ai-think { height: 1.45em; overflow: hidden; font-size: var(--t-sm); color: var(--c-soft); }
   .ai-think > span { display: flex; flex-direction: column; animation: ai-think 4.2s var(--e-soft) .9s both; }
   .ai-think > span > span { height: 1.45em; line-height: 1.45em; white-space: nowrap; }
@@ -976,7 +976,7 @@
                 </sc-for>
               </div>
               <select value="{{ lbLang }}" onChange="{{ setLbLang }}" aria-label="Sprache" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); color: var(--c-ink); padding: 6px 10px; font-size: var(--t-sm);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;"><option value="de">Deutsch</option><option value="en">Englisch</option></select>
-              <label title="Die KI nutzt dieses Buch im Chat" style="display: flex; align-items: center; gap: 7px; font-size: var(--t-sm); color: var(--c-soft); white-space: nowrap; flex: none; cursor: pointer;"><input type="checkbox" checked="{{ lbInChat }}" onChange="{{ toggleLbChat }}" style="accent-color: var(--c-accent); width: 16px; height: 16px; margin: 0;"><span>Im Chat</span></label>
+              <label title="Die AI nutzt dieses Buch im Chat" style="display: flex; align-items: center; gap: 7px; font-size: var(--t-sm); color: var(--c-soft); white-space: nowrap; flex: none; cursor: pointer;"><input type="checkbox" checked="{{ lbInChat }}" onChange="{{ toggleLbChat }}" style="accent-color: var(--c-accent); width: 16px; height: 16px; margin: 0;"><span>Im Chat</span></label>
             </div>
             <sc-if value="{{ lbNoText }}" hint-placeholder-val="{{ false }}">
               <span style="border-radius: 12px; background: var(--c-warn); color: var(--c-warn-ink); padding: 10px 14px; font-size: var(--t-sm); line-height: 1.5;">{{ lbNoTextMsg }}</span>
@@ -986,8 +986,8 @@
                 <span class="eyebrow">Zusammenfassung</span>
                 <button onClick="{{ lbGen }}" disabled="{{ lbCantGen }}" style="display: flex; align-items: center; gap: 6px; border: none; background: transparent; color: var(--c-accent-lift); font-size: var(--t-sm); font-weight: 700; white-space: nowrap; flex: none; padding: 5px 8px; border-radius: 8px; opacity: {{ lbGenOpacity }}; cursor: pointer;" style-hover="background: color-mix(in srgb, var(--c-accent) 10%, transparent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><use href="#ic-spark"></use></svg><span>{{ lbGenLabel }}</span></button>
               </div>
-              <textarea value="{{ lbSummary }}" onChange="{{ setLbSummary }}" onBlur="{{ lbPersist }}" rows="5" aria-label="Zusammenfassung" placeholder="Worum geht es? Selbst schreiben oder von der KI erstellen lassen." style="field-sizing: content; min-height: 110px; resize: vertical; border: 1px solid var(--c-hair); border-radius: 12px; background: var(--c-input); color: var(--c-ink); padding: 11px 13px; font-size: 1em; line-height: 1.55; font-family: inherit; outline: none;" style-focus="border-color: var(--c-accent);"></textarea>
-              <sc-if value="{{ lbGenErr }}" hint-placeholder-val="{{ false }}"><span style="font-size: var(--t-sm); color: var(--c-warn-ink);">Die KI hat nicht geantwortet. Nochmal versuchen.</span></sc-if>
+              <textarea value="{{ lbSummary }}" onChange="{{ setLbSummary }}" onBlur="{{ lbPersist }}" rows="5" aria-label="Zusammenfassung" placeholder="Worum geht es? Selbst schreiben oder von der AI erstellen lassen." style="field-sizing: content; min-height: 110px; resize: vertical; border: 1px solid var(--c-hair); border-radius: 12px; background: var(--c-input); color: var(--c-ink); padding: 11px 13px; font-size: 1em; line-height: 1.55; font-family: inherit; outline: none;" style-focus="border-color: var(--c-accent);"></textarea>
+              <sc-if value="{{ lbGenErr }}" hint-placeholder-val="{{ false }}"><span style="font-size: var(--t-sm); color: var(--c-warn-ink);">Die AI hat nicht geantwortet. Nochmal versuchen.</span></sc-if>
             </div>
             <div style="display: flex; flex-direction: column; gap: 4px;">
               <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px;">
@@ -1037,7 +1037,7 @@
         <div class="om-rise lib-sheet" onClick="{{ helpStop }}" role="dialog" aria-modal="true" aria-label="Text einfügen" style="width: min(640px, 100%); max-height: calc(100vh - 40px); box-sizing: border-box; background: var(--c-surface); border-radius: var(--c-radius-in); box-shadow: var(--sh-lift); padding: 22px; display: flex; flex-direction: column; gap: 12px;">
           <div style="display: flex; flex-direction: column; gap: 4px;">
             <h2 style="font-size: var(--t-lg);">Text einfügen</h2>
-            <span style="font-size: var(--t-sm); color: var(--c-soft);">Artikel, Notizen oder Auszüge. Die KI behandelt sie wie ein Buch.</span>
+            <span style="font-size: var(--t-sm); color: var(--c-soft);">Artikel, Notizen oder Auszüge. Die AI behandelt sie wie ein Buch.</span>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px;">
             <input value="{{ lpTitle }}" onChange="{{ setLpTitle }}" placeholder="Titel" aria-label="Titel" style="min-width: 0; border: 1px solid var(--c-hair); border-radius: 10px; background: var(--c-input); color: var(--c-ink); padding: 9px 12px; font-size: 1em;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">
@@ -1478,7 +1478,7 @@
                       <textarea value="{{ c.text }}" onChange="{{ c.rename }}" onBlur="{{ c.commitEdit }}" onKeyDown="{{ c.editKey }}" autoFocus="{{ true }}" rows="1" aria-label="Titel" onPointerDown="{{ c.stop }}" style="font-weight: 500; font-size: {{ c.titleSize }}; letter-spacing: -.005em; color: {{ c.ink }}; border: none; border-radius: 0; background: transparent; padding: 0; margin: 0; width: 100%; min-width: 0; box-sizing: border-box; font-family: inherit; outline: none; resize: none; overflow: hidden; field-sizing: content; line-height: inherit; overflow-wrap: anywhere;"></textarea>
                     </sc-if>
                     <sc-if value="{{ c.titleViewing }}" hint-placeholder-val="{{ true }}">
-                      <span class="om-strike {{ c.flickerClass }}" data-on="{{ c.strikeOn }}" onPointerDown="{{ c.titlePress }}" style="font-weight: 500; font-size: {{ c.titleSize }}; letter-spacing: -.005em; color: {{ c.ink }}; overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap;">{{ c.text }}<sc-if value="{{ c.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der KI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der KI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
+                      <span class="om-strike {{ c.flickerClass }}" data-on="{{ c.strikeOn }}" onPointerDown="{{ c.titlePress }}" style="font-weight: 500; font-size: {{ c.titleSize }}; letter-spacing: -.005em; color: {{ c.ink }}; overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap;">{{ c.text }}<sc-if value="{{ c.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der AI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der AI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
                     </sc-if>
                   </div>
                   <button onClick="{{ c.editPen }}" onPointerDown="{{ c.stop }}" aria-label="bearbeiten" title="bearbeiten" style="position: absolute; top: -8px; right: -6px; z-index: 2; border: none; background: transparent; color: var(--c-soft); width: 13px; height: 13px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer;" style-hover="color: var(--c-ink);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">
@@ -1783,7 +1783,7 @@
                     <textarea value="{{ p.nameVal }}" onChange="{{ p.rename }}" onBlur="{{ p.commitEdit }}" onKeyDown="{{ p.editKey }}" autoFocus="{{ true }}" rows="1" aria-label="Projektname" onPointerDown="{{ p.stop }}" style="flex: 1; min-width: 0; color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3; border: none; border-radius: 0; background: transparent; padding: 0; box-sizing: border-box; font-family: inherit; outline: none; resize: none; overflow: hidden; field-sizing: content; overflow-wrap: anywhere;"></textarea>
                   </sc-if>
                   <sc-if value="{{ p.titleViewing }}" hint-placeholder-val="{{ true }}">
-                    <span class="{{ p.flickerClass }}" onPointerDown="{{ p.titlePress }}" style="flex: 1; min-width: 0; color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3;">{{ p.nameVal }}<sc-if value="{{ p.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der KI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der KI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
+                    <span class="{{ p.flickerClass }}" onPointerDown="{{ p.titlePress }}" style="flex: 1; min-width: 0; color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3;">{{ p.nameVal }}<sc-if value="{{ p.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der AI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der AI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
                   </sc-if>
                   <button class="om-pen" onClick="{{ p.advance }}" onPointerDown="{{ p.stop }}" aria-label="weiterschieben" title="{{ p.nextLabel }}" style="flex: none; border: none; background: transparent; color: var(--c-soft); width: 22px; height: 22px; border-radius: 7px; display: flex; align-items: center; justify-content: center; padding: 0;" style-hover="color: var(--c-ink); background: var(--c-panel);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
@@ -2018,7 +2018,7 @@
                     </sc-for>
                   </div>
                   <sc-if value="{{ m.ownKnow }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self: flex-start; font-size: var(--t-sm); color: var(--c-warn-ink); background: var(--c-warn); border-radius: 999px; padding: 4px 12px;">Enthält eigenes Wissen der KI, nicht aus deinen Büchern</span>
+                    <span style="align-self: flex-start; font-size: var(--t-sm); color: var(--c-warn-ink); background: var(--c-warn); border-radius: 999px; padding: 4px 12px;">Enthält eigenes Wissen der AI, nicht aus deinen Büchern</span>
                   </sc-if>
                   <sc-if value="{{ m.hasSources }}" hint-placeholder-val="{{ false }}">
                     <div class="ai-stag ai-srcs" style="display: flex; flex-wrap: wrap; gap: 6px;">
@@ -2061,7 +2061,7 @@
 
             <sc-if value="{{ aiBusy }}" hint-placeholder-val="{{ false }}">
               <div class="ai-in-ai" style="align-self: flex-start; display: flex; align-items: center; gap: 14px;">
-                <div role="status" aria-label="KI denkt nach" style="display: flex; gap: 5px; padding: 12px 14px; border-radius: 14px; background: var(--c-panel);"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span></div>
+                <div role="status" aria-label="AI denkt nach" style="display: flex; gap: 5px; padding: 12px 14px; border-radius: 14px; background: var(--c-panel);"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span></div>
                 <span class="ai-phase" aria-live="polite" style="font-size: var(--t-sm); color: var(--c-soft); white-space: nowrap;"><span key="{{ aiPhase }}">{{ aiPhase }}</span></span>
                 <button onClick="{{ aiCancel }}" style="border: none; background: transparent; color: var(--c-soft); font-size: var(--t-sm); text-decoration: underline; cursor: pointer;" style-hover="color: var(--c-ink);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">Abbrechen</button>
               </div>
@@ -2082,14 +2082,14 @@
                 </sc-for>
               </div>
             </sc-if>
-            <div role="group" aria-label="Kontext der KI" style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+            <div role="group" aria-label="Kontext der AI" style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
               <span class="eyebrow" style="margin-right: 3px;">Kontext</span>
               <sc-for list="{{ aiCtxChips }}" as="cx" hint-placeholder-count="7">
                 <button class="ai-ctx" onClick="{{ cx.toggle }}" aria-pressed="{{ cx.on }}" title="{{ cx.tip }}" style="display: flex; align-items: center; gap: 6px; border: 1px solid {{ cx.line }}; background: {{ cx.bg }}; color: {{ cx.fg }}; border-radius: 999px; padding: 4px 10px 4px 8px; font-size: .8em; font-weight: 600; white-space: nowrap; cursor: pointer;" style-hover="border-color: var(--c-accent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><span style="flex: none; width: 6px; height: 6px; border-radius: 999px; background: {{ cx.dot }};"></span><span>{{ cx.label }}</span></button>
               </sc-for>
             </div>
             <div style="display: flex; gap: 8px; align-items: flex-end;">
-              <textarea data-aiinput="1" value="{{ aiDraft }}" onChange="{{ setAiDraft }}" onKeyDown="{{ aiKey }}" rows="1" aria-label="Nachricht an die KI" placeholder="Frag etwas oder beschreibe, was geplant werden soll …" style="flex: 1; min-width: 0; box-sizing: border-box; resize: none; field-sizing: content; min-height: 42px; max-height: 160px; border: 1px solid var(--c-hair); border-radius: 14px; background: var(--c-input); color: var(--c-ink); padding: 10px 14px; font-size: 1em; line-height: 1.45; font-family: inherit; outline: none;" style-focus="outline: none;"></textarea>
+              <textarea data-aiinput="1" ref="{{ aiInputRef }}" onKeyDown="{{ aiKey }}" rows="1" aria-label="Nachricht an die AI" placeholder="Frag etwas oder beschreibe, was geplant werden soll …" style="flex: 1; min-width: 0; box-sizing: border-box; resize: none; field-sizing: content; min-height: 42px; max-height: 160px; border: 1px solid var(--c-hair); border-radius: 14px; background: var(--c-input); color: var(--c-ink); padding: 10px 14px; font-size: 1em; line-height: 1.45; font-family: inherit; outline: none;" style-focus="outline: none;"></textarea>
               <button class="om-cta ai-send" onClick="{{ aiSendNow }}" disabled="{{ aiCantSend }}" style="display: flex; align-items: center; gap: 7px; flex: none; border: none; background: var(--c-accent); color: var(--c-on-accent); border-radius: 999px; padding: 11px 18px; font-size: var(--t-sm); font-weight: 700; opacity: {{ aiSendOpacity }}; cursor: pointer; outline: none;" style-focus="outline: none;"><span>Senden</span><svg class="ai-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
             </div>
           </div>
@@ -2227,7 +2227,7 @@
             <button onClick="{{ libPick }}" style="min-height: 360px; border: 1.5px dashed color-mix(in srgb, var(--c-accent) 45%, var(--c-hair)); background: color-mix(in srgb, var(--c-accent) 5%, transparent); border-radius: var(--c-radius-in); color: var(--c-ink); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 32px; text-align: center; cursor: pointer;" style-hover="border-color: var(--c-accent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
               <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><use href="#ic-shelf"></use></svg>
               <span style="font-family: var(--c-font-head); font-size: var(--t-lg); font-weight: var(--c-hw); letter-spacing: -.012em;">Bücher hierher ziehen</span>
-              <span style="max-width: 46ch; color: var(--c-soft); font-size: var(--t-sm); line-height: 1.5; text-wrap: pretty;">PDF, EPUB, Word, Markdown oder Text. Der Text wird ausgelesen und auf diesem Gerät gespeichert, danach erstellt die KI Zusammenfassung und Kernideen.</span>
+              <span style="max-width: 46ch; color: var(--c-soft); font-size: var(--t-sm); line-height: 1.5; text-wrap: pretty;">PDF, EPUB, Word, Markdown oder Text. Der Text wird ausgelesen und auf diesem Gerät gespeichert, danach erstellt die AI Zusammenfassung und Kernideen.</span>
             </button>
           </sc-if>
           <sc-if value="{{ libNoneHere }}" hint-placeholder-val="{{ false }}">
@@ -2270,7 +2270,7 @@
             </div>
             <sc-if value="{{ libHasChat }}" hint-placeholder-val="{{ false }}">
               <div style="display: flex; gap: 2px; flex: none;">
-                <button onClick="{{ libOpenInKi }}" title="Im KI-Tab weiterführen" style="border: none; background: transparent; color: var(--c-soft); border-radius: 999px; padding: 6px 10px; font-size: var(--t-sm); white-space: nowrap; cursor: pointer;" style-hover="color: var(--c-ink); background: var(--c-panel);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">Im KI-Tab</button>
+                <button onClick="{{ libOpenInKi }}" title="Im AI-Tab weiterführen" style="border: none; background: transparent; color: var(--c-soft); border-radius: 999px; padding: 6px 10px; font-size: var(--t-sm); white-space: nowrap; cursor: pointer;" style-hover="color: var(--c-ink); background: var(--c-panel);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">Im AI-Tab</button>
                 <button onClick="{{ libNewChat }}" style="border: none; background: transparent; color: var(--c-accent-lift); border-radius: 999px; padding: 6px 10px; font-size: var(--t-sm); font-weight: 700; white-space: nowrap; cursor: pointer;" style-hover="background: color-mix(in srgb, var(--c-accent) 12%, transparent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">Neu</button>
               </div>
             </sc-if>
@@ -2278,7 +2278,7 @@
           <div data-libthread="1" style="flex: 1; min-height: 220px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
             <sc-if value="{{ libChatEmpty }}" hint-placeholder-val="{{ true }}">
               <div style="margin: auto 0; display: flex; flex-direction: column; gap: 10px;">
-                <span style="font-size: var(--t-sm); color: var(--c-soft); line-height: 1.5; text-wrap: pretty;">Antworten stützen sich zuerst auf deine Bücher, mit Titel und Seite. Was die KI aus eigenem Wissen ergänzt, ist markiert. Deutsch oder Englisch.</span>
+                <span style="font-size: var(--t-sm); color: var(--c-soft); line-height: 1.5; text-wrap: pretty;">Antworten stützen sich zuerst auf deine Bücher, mit Titel und Seite. Was die AI aus eigenem Wissen ergänzt, ist markiert. Deutsch oder Englisch.</span>
                 <div class="ai-stag" style="display: flex; flex-direction: column; gap: 6px;">
                   <sc-for list="{{ libStarters }}" as="st" hint-placeholder-count="3">
                     <button class="ai-starter" onClick="{{ st.go }}" disabled="{{ st.off }}" style="border: 1px solid var(--c-hair); background: var(--c-panel); color: var(--c-ink); border-radius: 12px; padding: 10px 12px; text-align: left; font-size: var(--t-sm); line-height: 1.35; cursor: pointer;" style-hover="border-color: var(--c-accent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">{{ st.label }}</button>
@@ -2300,7 +2300,7 @@
                     </sc-for>
                   </div>
                   <sc-if value="{{ m.ownKnow }}" hint-placeholder-val="{{ false }}">
-                    <span style="align-self: flex-start; font-size: var(--t-sm); color: var(--c-warn-ink); background: var(--c-warn); border-radius: 999px; padding: 4px 12px;">Enthält eigenes Wissen der KI</span>
+                    <span style="align-self: flex-start; font-size: var(--t-sm); color: var(--c-warn-ink); background: var(--c-warn); border-radius: 999px; padding: 4px 12px;">Enthält eigenes Wissen der AI</span>
                   </sc-if>
                   <sc-if value="{{ m.hasCites }}" hint-placeholder-val="{{ false }}">
                     <div class="ai-stag" style="display: flex; flex-direction: column; gap: 6px;">
@@ -2356,7 +2356,7 @@
             </sc-for>
             <sc-if value="{{ libBusy }}" hint-placeholder-val="{{ false }}">
               <div class="ai-in-ai" style="display: flex; align-items: center; gap: 12px;">
-                <div role="status" aria-label="KI sucht in deinen Büchern" style="display: flex; gap: 5px; padding: 11px 13px; border-radius: 14px; background: var(--c-panel);"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span></div>
+                <div role="status" aria-label="AI sucht in deinen Büchern" style="display: flex; gap: 5px; padding: 11px 13px; border-radius: 14px; background: var(--c-panel);"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span></div>
                 <span class="ai-phase" aria-live="polite" style="font-size: var(--t-sm); color: var(--c-soft);"><span key="{{ aiPhase }}">{{ aiPhase }}</span></span>
                 <button onClick="{{ aiCancel }}" style="border: none; background: transparent; color: var(--c-soft); font-size: var(--t-sm); text-decoration: underline; cursor: pointer;" style-hover="color: var(--c-ink);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">Abbrechen</button>
               </div>
@@ -2418,7 +2418,7 @@
                 <div onKeyDown="{{ c.keyOpen }}" role="button" tabIndex="0" aria-expanded="{{ c.open }}" data-clhead="1" style="display: flex; flex-direction: column; gap: 5px; cursor: pointer; border-radius: 6px;">
                   <sc-if value="{{ c.overdue }}" hint-placeholder-val="{{ false }}"><span style="font-size: .7em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-accent-lift);">{{ c.overdueLabel }}</span></sc-if>
                   <sc-if value="{{ c.showDue }}" hint-placeholder-val="{{ false }}"><span class="num" style="font-size: .74em; color: var(--c-faint);">{{ c.dueLabel }}</span></sc-if>
-                  <span class="{{ c.flickerClass }}" style="color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3;">{{ c.title }}<sc-if value="{{ c.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der KI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der KI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
+                  <span class="{{ c.flickerClass }}" style="color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3;">{{ c.title }}<sc-if value="{{ c.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der AI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der AI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
                   <span style="font-size: .8em; color: var(--c-soft);">{{ c.meta }}</span>
                   <sc-if value="{{ c.hasSteps }}" hint-placeholder-val="{{ false }}">
                     <div style="height: 3px; border-radius: 999px; background: var(--c-hair); overflow: hidden; margin-top: 3px;"><div style="height: 100%; width: {{ c.stepsPct }}; background: var(--c-accent);"></div></div>
@@ -2530,7 +2530,7 @@
         <sc-for list="{{ notes }}" as="n" hint-placeholder-count="0">
           <div class="om-lift {{ n.fadeClass }}" data-note="{{ n.id }}" data-jumped="{{ n.isJumped }}" style="background: var(--c-surface); border: 1px solid var(--c-hair); border-radius: var(--c-radius-in); padding: 15px 18px; display: flex; flex-direction: column; gap: 7px; box-shadow: var(--sh-amb);">
             <div style="display: flex; justify-content: space-between; gap: 12px; align-items: baseline;">
-              <h2 style="font-size: var(--t-md);">{{ n.title }}<sc-if value="{{ n.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der KI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der KI erstellt</title><use href="#ic-spark"></use></svg></sc-if></h2>
+              <h2 style="font-size: var(--t-md);">{{ n.title }}<sc-if value="{{ n.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der AI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der AI erstellt</title><use href="#ic-spark"></use></svg></sc-if></h2>
               <button onClick="{{ n.remove }}" aria-label="löschen" style="border: none; background: transparent; color: var(--c-faint); font-size: 18px; line-height: 1; padding: 2px 5px;">×</button>
             </div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
@@ -2755,7 +2755,7 @@
                 <sc-if value="{{ m.mfHasPattern }}" hint-placeholder-val="{{ false }}">
                   <div class="om-rise" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--c-warn); color: var(--c-warn-ink); border-radius: 12px; padding: 7px 7px 7px 13px; font-size: .82em;">
                     <span><span style="font-weight: 700;">Wiederholt</span> · {{ m.mfPattern }}</span>
-                    <button onClick="{{ m.mfAsk }}" style="border: none; background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; border-radius: 999px; padding: 5px 11px; font-size: .92em; font-weight: 700; cursor: pointer; font-family: inherit;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">KI fragen</button>
+                    <button onClick="{{ m.mfAsk }}" style="border: none; background: color-mix(in srgb, currentColor 14%, transparent); color: inherit; border-radius: 999px; padding: 5px 11px; font-size: .92em; font-weight: 700; cursor: pointer; font-family: inherit;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">AI fragen</button>
                   </div>
                 </sc-if>
                 <sc-if value="{{ m.mfFormOpen }}" hint-placeholder-val="{{ false }}">
@@ -3010,9 +3010,9 @@
         <sc-if value="{{ true }}" hint-placeholder-val="{{ true }}">
           <button class="om-chip om-press" onClick="{{ guideAddSec }}" style="border: 1px dashed color-mix(in srgb, var(--c-accent) 55%, var(--c-hair)); background: color-mix(in srgb, var(--c-accent) 8%, transparent); color: var(--c-accent-lift); border-radius: 999px; padding: 8px 15px; font-weight: 600; font-size: .86em; display: flex; align-items: center; gap: 7px; cursor: pointer;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg><span>{{ guideAddLabel }}</span></button>
         </sc-if>
-        <button class="om-chip om-press" onClick="{{ guideWeekCheck }}" title="Die KI prüft diese Woche gegen deine Rolle und dein Framework" style="border: 1px solid var(--c-hair); background: transparent; color: var(--c-ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: .86em; display: flex; align-items: center; gap: 7px; cursor: pointer;" style-hover="border-color: var(--c-soft);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg><span>Woche prüfen</span></button>
+        <button class="om-chip om-press" onClick="{{ guideWeekCheck }}" title="Die AI prüft diese Woche gegen deine Rolle und dein Framework" style="border: 1px solid var(--c-hair); background: transparent; color: var(--c-ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: .86em; display: flex; align-items: center; gap: 7px; cursor: pointer;" style-hover="border-color: var(--c-soft);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg><span>Woche prüfen</span></button>
         <button class="om-chip om-press" onClick="{{ guideOpenHandover }}" title="Lesefassung zum Weitergeben oder Drucken" style="border: 1px solid var(--c-hair); background: transparent; color: var(--c-ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: .86em; display: flex; align-items: center; gap: 7px; cursor: pointer;" style-hover="border-color: var(--c-soft);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span>Übergabe</span></button>
-        <button class="om-chip om-press" onClick="{{ genOpenBtn }}" style="border: 1px solid color-mix(in srgb, var(--c-accent) 45%, var(--c-hair)); background: color-mix(in srgb, var(--c-accent) 10%, transparent); color: var(--c-accent-lift); border-radius: 999px; padding: 8px 15px; font-weight: 600; font-size: .86em; display: flex; align-items: center; gap: 7px; cursor: pointer;" style-hover="background: color-mix(in srgb, var(--c-accent) 18%, transparent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"></path></svg><span>Mit KI generieren</span></button>
+        <button class="om-chip om-press" onClick="{{ genOpenBtn }}" style="border: 1px solid color-mix(in srgb, var(--c-accent) 45%, var(--c-hair)); background: color-mix(in srgb, var(--c-accent) 10%, transparent); color: var(--c-accent-lift); border-radius: 999px; padding: 8px 15px; font-weight: 600; font-size: .86em; display: flex; align-items: center; gap: 7px; cursor: pointer;" style-hover="background: color-mix(in srgb, var(--c-accent) 18%, transparent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"></path></svg><span>Mit AI generieren</span></button>
         
       </div>
       <sc-if value="{{ hasUndo }}" hint-placeholder-val="{{ false }}">
@@ -3022,7 +3022,7 @@
         </div>
       </sc-if>
       <sc-if value="{{ guideNone }}" hint-placeholder-val="{{ false }}">
-        <div style="padding: 40px 20px; text-align: center; color: var(--c-soft);">Noch nichts festgehalten. Lass die KI einen Entwurf machen oder lege mit «{{ guideAddLabel }}» selbst einen Abschnitt an.</div>
+        <div style="padding: 40px 20px; text-align: center; color: var(--c-soft);">Noch nichts festgehalten. Lass die AI einen Entwurf machen oder lege mit «{{ guideAddLabel }}» selbst einen Abschnitt an.</div>
       </sc-if>
       <sc-if value="{{ guideIsBoard }}" hint-placeholder-val="{{ true }}">
       <div class="om-pboard om-gboard" data-guidezone="1" style="display: flex; gap: 10px; align-items: flex-start; overflow-x: auto; padding-bottom: 6px;">
@@ -3061,7 +3061,7 @@
                     </sc-if>
                   </button>
                   <sc-if value="{{ c.closed }}" hint-placeholder-val="{{ true }}">
-                    <span class="{{ c.flickerClass }}" style="flex: 1; min-width: 0; color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3; text-wrap: pretty; overflow-wrap: anywhere;">{{ c.title }}<sc-if value="{{ c.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der KI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der KI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
+                    <span class="{{ c.flickerClass }}" style="flex: 1; min-width: 0; color: var(--c-ink); font-size: .96em; font-weight: 600; line-height: 1.3; text-wrap: pretty; overflow-wrap: anywhere;">{{ c.title }}<sc-if value="{{ c.isAi }}" hint-placeholder-val="{{ false }}"><svg role="img" aria-label="Von der AI erstellt" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent-lift)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: -1px; margin-left: 6px; opacity: .9;"><title>Von der AI erstellt</title><use href="#ic-spark"></use></svg></sc-if></span>
                     <button class="om-pen" onClick="{{ c.advance }}" onPointerDown="{{ c.stop }}" aria-label="weiterschieben" title="{{ c.nextLabel }}" style="flex: none; border: none; background: transparent; color: var(--c-soft); width: 22px; height: 22px; border-radius: 7px; display: flex; align-items: center; justify-content: center; padding: 0;" style-hover="color: var(--c-ink); background: var(--c-panel);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"></path></svg>
                     </button>
@@ -3389,7 +3389,7 @@
 
             <sc-if value="{{ genIsBusy }}" hint-placeholder-val="{{ false }}">
               <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 36px 0;">
-                <div role="status" aria-label="KI entwirft" style="display: flex; gap: 5px; padding: 12px 14px; border-radius: 14px; background: var(--c-panel);"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span></div>
+                <div role="status" aria-label="AI entwirft" style="display: flex; gap: 5px; padding: 12px 14px; border-radius: 14px; background: var(--c-panel);"><span class="ai-dot"></span><span class="ai-dot"></span><span class="ai-dot"></span></div>
                 <span style="font-size: var(--t-sm); color: var(--c-soft);">{{ genBusyLabel }}</span>
                 <button onClick="{{ genCancel }}" style="border: none; background: transparent; color: var(--c-soft); font-size: var(--t-sm); text-decoration: underline; cursor: pointer;" style-hover="color: var(--c-ink);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">Abbrechen</button>
               </div>
@@ -3557,7 +3557,7 @@
       </sc-for>
       <div style="display: flex; flex-direction: column; gap: 16px; padding: 22px 4px 8px; box-shadow: inset 0 1px 0 var(--c-hair);">
         <div style="display: flex; flex-direction: column; gap: 4px; font-family: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;">
-          <h2 style="margin: 0; font-family: inherit; font-size: 19px; font-weight: 500; color: var(--c-ink);">KI-Anbieter</h2>
+          <h2 style="margin: 0; font-family: inherit; font-size: 19px; font-weight: 500; color: var(--c-ink);">AI-Anbieter</h2>
           <span style="font-size: 15px; color: var(--c-soft); opacity: .75;">Für die installierte App ausserhalb dieser Umgebung</span>
         </div>
         <div style="display: flex; flex-direction: column; gap: 14px; max-width: 620px;">
@@ -3744,7 +3744,7 @@
           <span style="font-size: 15px; color: var(--c-soft); opacity: .75;">Backup und Wiederherstellung</span>
         </div>
         <div style="display: flex; flex-direction: column; gap: 14px;">
-          <p style="margin: 0; font-size: .9em; color: var(--c-soft); max-width: 56ch;">Ohne Cloud-Sync liegt alles nur in diesem Browser. Das Backup enthält alle Daten, auch Buchtexte, Titelbilder und KI-Chats. Lade es herunter, bevor du den Browser oder Rechner wechselst.</p>
+          <p style="margin: 0; font-size: .9em; color: var(--c-soft); max-width: 56ch;">Ohne Cloud-Sync liegt alles nur in diesem Browser. Das Backup enthält alle Daten, auch Buchtexte, Titelbilder und AI-Chats. Lade es herunter, bevor du den Browser oder Rechner wechselst.</p>
           <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
             <button class="om-cta" onClick="{{ exportData }}" style="border: none; border-radius: 999px; background: var(--c-accent); color: var(--c-on-accent); padding: 6px 8px 6px 18px; font-weight: 700; font-size: .9em; display: flex; align-items: center; gap: 10px; box-shadow: var(--sh-amb);">
               <span>Backup herunterladen</span>
@@ -3762,6 +3762,21 @@
 
     </div>
   </main>
+  <sc-if value="{{ netOffline }}" hint-placeholder-val="{{ false }}">
+    <div role="status" aria-live="polite" class="om-rise" style="position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 80; display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 9px 16px 9px 12px; border-radius: 999px; background: var(--c-glass); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: inset 0 1px 0 var(--c-gloss), 0 14px 30px -14px rgba(0,0,0,.55); color: var(--c-ink); pointer-events: none;">
+      <span style="flex: none; width: 8px; height: 8px; border-radius: 999px; background: var(--c-warn-ink); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-warn-ink) 22%, transparent); animation: om-dvpulse 1.8s ease-in-out infinite;"></span>
+      <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+        <span style="font-size: 13px; font-weight: 700;">Offline</span>
+        <span style="font-size: 12px; color: var(--c-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ netSub }}</span>
+      </span>
+    </div>
+  </sc-if>
+  <sc-if value="{{ netBack }}" hint-placeholder-val="{{ false }}">
+    <div role="status" aria-live="polite" class="om-rise" style="position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 80; display: flex; align-items: center; gap: 9px; padding: 9px 16px 9px 12px; border-radius: 999px; background: var(--c-glass); backdrop-filter: blur(14px) saturate(1.3); -webkit-backdrop-filter: blur(14px) saturate(1.3); box-shadow: inset 0 1px 0 var(--c-gloss), 0 14px 30px -14px rgba(0,0,0,.55); color: var(--c-ink); pointer-events: none;">
+      <span style="flex: none; width: 8px; height: 8px; border-radius: 999px; background: var(--c-accent);"></span>
+      <span style="font-size: 13px; font-weight: 700;">Wieder online</span>
+    </div>
+  </sc-if>
   <sc-if value="{{ dvConflictOpen }}" hint-placeholder-val="{{ false }}">
     <div role="dialog" aria-modal="true" aria-label="Zwei Versionen gefunden" style="position: fixed; inset: 0; z-index: 90; display: flex; align-items: flex-end; justify-content: center; padding: 24px; background: color-mix(in srgb, var(--c-desk) 55%, transparent); backdrop-filter: blur(6px);">
       <div class="om-mat" style="width: 100%; max-width: 460px; background: var(--c-surface); border-radius: 26px; padding: 24px; display: flex; flex-direction: column; gap: 14px; box-shadow: inset 0 1px 0 var(--c-gloss), 0 30px 60px -20px rgba(0,0,0,.6);">
@@ -3787,13 +3802,13 @@ const NAV = [
   ['cleaning', 'Reinigung', '#ic-drop', 'Arbeit', 'Reinigung'],
   ['notes', 'Notizen', '#ic-book', 'Wissen', 'Notizen'],
   ['library', 'Bibliothek', '#ic-shelf', 'Wissen', 'Bibliothek'],
-  ['ai', 'KI', '#ic-spark', 'Wissen', 'KI'],
+  ['ai', 'AI', '#ic-spark', 'Wissen', 'AI'],
   ['machines', 'Maschinen', '#ic-cog', 'Referenz', 'Maschinen'],
   ['team', 'Team', '#ic-people', 'Referenz', 'Team'],
   ['role', 'Rolle', '#ic-star', 'Grundlage', 'Meine Rolle'],
   ['framework', 'Framework', '#ic-flow', 'Grundlage', 'Framework']
 ];
-/* the Rolle and Framework pages as data, so the KI reads the same text the user sees */
+/* the Rolle and Framework pages as data, so the AI reads the same text the user sees */
 const AI_GUIDE = {
   rolle: {
     beschreibung: 'Stellvertretender Abteilungsleiter, Macaron-Abteilung, 18 Mitarbeitende und die Maschinen dazu. Ich führe die Abteilung im Alltag gleichwertig mit dem Abteilungsleiter und trage sie allein, wenn er weg ist.',
@@ -3833,7 +3848,7 @@ function guideSeed() {
     ]
   };
 }
-/* what the KI can draft per page: key, chip label, section title, style, brief */
+/* what the AI can draft per page: key, chip label, section title, style, brief */
 const GEN_SECS = {
   role: [
     ['beschreibung', 'Beschreibung', 'Meine Rolle', 'text', 'genau 1 Punkt ohne head, 2–3 Sätze: wer ich bin, wofür ich da bin, wie ich mit meinem Vorgesetzten zusammenarbeite'],
@@ -4138,15 +4153,15 @@ const CARD_STYLES = { standard: ['Standard'], mag: ['Magazin'], pop: ['Pop'], gl
 /* in-app help. HELP_VER goes up by one with every release that adds features;
    entries tagged with that version show as "Neu" until the help sheet has been opened.
    tab keys match state.tab; "all" lists changes across the app. */
-const HELP_VER = 15;
+const HELP_VER = 16;
 const HELP = {
   today: [
     [8, 'Im Blick', 'Oben auf Heute: erledigte Aufgaben der Woche, überfällige Reinigungen, Störungen der letzten 4 Wochen und offene Delegationen. Antippen springt in den Bereich.'],
     [8, 'Check-ins', 'Fällige Check-ins von Delegationen und Vereinbarungen zum Nachfassen erscheinen hier. «Erledigt» oder «+1 Woche» verschiebt sie.'],
-    [8, 'Wochenrückblick', 'Ab Donnerstag: was lief gut, was nicht, was änderst du. Die KI schlägt einen Fokus vor, der die nächste Woche oben auf Heute steht.'],
+    [8, 'Wochenrückblick', 'Ab Donnerstag: was lief gut, was nicht, was änderst du. Die AI schlägt einen Fokus vor, der die nächste Woche oben auf Heute steht.'],
     [8, 'Experiment der Woche', 'Eine Kernidee aus einem Buch, die du diese Woche ausprobierst. Notiere, wie es lief, und schliesse es ab.'],
     [8, 'Zitat des Tages', 'Jeden Tag eines deiner gesammelten Zitate. Ein Klick öffnet das Buch.'],
-    [8, 'Schnell erfassen', 'Der Stift unten rechts oder Ctrl+J (Mac: ⌘+J) öffnet die Schnellerfassung in jedem Tab. Enter legt den Gedanken in die Inbox, «KI sortieren» macht daraus Aufgabe, Notiz, Störung, Team-Eintrag oder Delegation.']
+    [8, 'Schnell erfassen', 'Der Stift unten rechts oder Ctrl+J (Mac: ⌘+J) öffnet die Schnellerfassung in jedem Tab. Enter legt den Gedanken in die Inbox, «AI sortieren» macht daraus Aufgabe, Notiz, Störung, Team-Eintrag oder Delegation.']
   ],
   machines: [
     [10, 'Störungslog pro Maschine', 'Jede Maschine führt ihr eigenes Log: «+ Störung» im geöffneten Blatt erfasst Datum, Störung, Lösung, Stillstand in Stunden und ein Foto. Einträge starten offen, ein Tipp auf den Status markiert sie als gelöst; die Karte zeigt die Zahl offener Störungen.'],
@@ -4154,12 +4169,13 @@ const HELP = {
   ],
   team: [
     [8, 'Verlauf', '«Verlauf» bei einer Person sammelt 1:1, Feedback, Anerkennung und Vereinbarungen mit Datum. Mit «Nachfassen am» erscheint der Punkt zum Termin auf Heute.'],
-    [8, 'Gespräch vorbereiten', 'Die KI bereitet das nächste 1:1 vor, aus Verlauf, Delegationen, deinem Framework und deinen Büchern.'],
+    [8, 'Gespräch vorbereiten', 'Die AI bereitet das nächste 1:1 vor, aus Verlauf, Delegationen, deinem Framework und deinen Büchern.'],
     [8, 'Delegiert', 'Aufgabe, Person, Stufe der Delegationsleiter und Check-in-Datum. «Stufe höher» gibt mehr Verantwortung ab, fällige Check-ins stehen auf Heute.']
   ],
   settings: [
-    [15, 'Modelle wählen', 'Unter KI-Anbieter lädt der Pfeil-Knopf neben Gemini und Groq die Modelle, die dein Key nutzen kann. Danach wählst du sie aus einer Liste; sie wird auch beim Eintragen eines neuen Keys geladen.'],
-    [14, 'KI-Anbieter', 'Unter Appearance → KI-Anbieter einen Gemini-Key (gratis), Claude-Key oder Groq-Key eintragen. So läuft die KI auch in der installierten App. «Verbindung testen» prüft den Key.'],
+    [16, 'Offline', 'Ohne Internet erscheint unten «Offline». Die installierte App startet trotzdem, deine Änderungen bleiben gespeichert und werden synchronisiert, sobald du wieder online bist.'],
+    [15, 'Modelle wählen', 'Unter AI-Anbieter lädt der Pfeil-Knopf neben Gemini und Groq die Modelle, die dein Key nutzen kann. Danach wählst du sie aus einer Liste; sie wird auch beim Eintragen eines neuen Keys geladen.'],
+    [14, 'AI-Anbieter', 'Unter Appearance → AI-Anbieter einen Gemini-Key (gratis), Claude-Key oder Groq-Key eintragen. So läuft die AI auch in der installierten App. «Verbindung testen» prüft den Key.'],
     [14, 'Als App installieren', 'Auf deiner eigenen Adresse (z. B. GitHub Pages) lässt sich die App über Teilen → Zum Home-Bildschirm installieren und startet auch offline.'],
     [13, 'Passwort', 'Unter Cloud-Sync «Passwort ändern», oder abgemeldet «Passwort vergessen?»: ein Code kommt per Mail, damit setzt du ein neues Passwort.'],
     [13, 'Darstellung synchronisiert', 'Theme, Schrift, Dichte und Kartenstile folgen dir auf alle Geräte. Kartenbilder sind in den wöchentlichen Backups enthalten.'],
@@ -4167,47 +4183,47 @@ const HELP = {
     [12, 'Automatische Backups', 'Einmal täglich legt die App eine Kopie in der Cloud ab (30 bleiben). «Backup jetzt» sichert sofort, «Wiederherstellen» lädt eine ältere Version.'],
     [12, 'Zwei Versionen', 'Wurde auf einem anderen Gerät gespeichert, während hier Änderungen offen sind, fragt die App, welche Version gilt. Die andere wird vorher gesichert.'],
     [9, 'Seitenleiste nur Icons', 'Unter Appearance → Seitenleiste «Nur Icons» wählen: die Leiste zeigt nur Symbole, der Name erscheint beim Darüberfahren.'],
-    [8, 'Vollständiges Backup', 'Das Backup enthält jetzt alles: Buchtexte, Titelbilder, KI-Chats, Rolle und Framework. «Backup laden» stellt es auf einem anderen Gerät wieder her.']
+    [8, 'Vollständiges Backup', 'Das Backup enthält jetzt alles: Buchtexte, Titelbilder, AI-Chats, Rolle und Framework. «Backup laden» stellt es auf einem anderen Gerät wieder her.']
   ],
   role: [
-    [5, 'KI-Zeichen', 'Karten und Punkte, die über einen KI-Vorschlag oder «Mit KI generieren» entstanden sind, tragen ein kleines Funkeln-Symbol neben dem Titel.'],
+    [5, 'AI-Zeichen', 'Karten und Punkte, die über einen AI-Vorschlag oder «Mit AI generieren» entstanden sind, tragen ein kleines Funkeln-Symbol neben dem Titel.'],
     [3, 'Board-Ansicht', 'Jeder Abschnitt ist eine Spalte, jeder Punkt eine Karte, wie bei Projekten. Karten per Ziehen umsortieren oder in einen anderen Abschnitt verschieben. Der Pfeil auf der Karte schiebt sie einen Abschnitt weiter.'],
     [3, 'Karte bearbeiten', 'Ein Klick öffnet die Karte zum Bearbeiten. Klick daneben, Esc oder ✓ schliesst sie. Eine neue, leer gelassene Karte verschwindet wieder.'],
     [3, 'Icon wählen', 'Auf das Icon links auf der Karte klicken: Symbol, Farbe oder Emoji wählen. «Entfernen» setzt es zurück.'],
-    [3, 'Status', 'Neu, Üben oder Sitzt, damit du siehst, was schon selbstverständlich ist und woran du noch arbeitest. Die KI berücksichtigt den Status.'],
+    [3, 'Status', 'Neu, Üben oder Sitzt, damit du siehst, was schon selbstverständlich ist und woran du noch arbeitest. Die AI berücksichtigt den Status.'],
     [3, 'Person', 'Einem Punkt eine Person aus dem Team zuordnen, z. B. wer eine Stufe der Delegationsleiter gerade übernimmt.'],
     [3, 'Tags, Datum, Schritte, Bild', 'Dieselben Möglichkeiten wie auf Projektkarten: Tags in drei Gruppen, Fälligkeit mit Wiederholung, abhakbare Schritte mit Fortschritt und ein Bild auf der Karte.'],
     [3, 'Als Aufgabe', 'Legt den Punkt in die Inbox dieser Woche, mit Icon und Beschreibung. Rückgängig ist ein paar Sekunden möglich.'],
-    [3, 'Woche prüfen', 'Öffnet die KI und lässt deine Woche gegen Rolle und Framework prüfen: was diese Woche gefehlt hat und was sie vorschlägt.'],
+    [3, 'Woche prüfen', 'Öffnet die AI und lässt deine Woche gegen Rolle und Framework prüfen: was diese Woche gefehlt hat und was sie vorschlägt.'],
     [3, 'Übergabe', 'Eine saubere Lesefassung der Seite mit Status und Personen. «Drucken / PDF» druckt nur diese Seite.'],
-    [2, 'Mit KI generieren', 'Wenige Angaben ausfüllen, Abschnitte wählen, Entwurf prüfen, einzelne Abschnitte neu entwerfen lassen und dann ergänzen oder die Seite ersetzen.'],
+    [2, 'Mit AI generieren', 'Wenige Angaben ausfüllen, Abschnitte wählen, Entwurf prüfen, einzelne Abschnitte neu entwerfen lassen und dann ergänzen oder die Seite ersetzen.'],
     [2, 'Ansichten', 'Board, Liste, Raster oder Kompakt. In Liste, Raster und Kompakt bearbeitest du einen Abschnitt über den Stift, der beim Überfahren erscheint. Der Kartenstil lässt sich dort umstellen.'],
     [1, 'Abschnitte', 'Neue Abschnitte über das «+» rechts im Board oder «Neuer Abschnitt». Titel anklicken zum Umbenennen, × beim Überfahren zum Löschen, mit Rückgängig.']
   ],
   ai: [
-    [7, 'Kontext', 'Die Zeile «Kontext» über dem Eingabefeld zeigt, was die KI liest: Woche, Projekte, Reinigung, Notizen, Maschinen, Team, Rolle & Framework und Bibliothek. Antippen schaltet einen Bereich für diesen Chat aus oder ein.'],
-    [7, 'Direkt übernehmen', 'Schlägt die KI eine oder zwei Änderungen vor, übernimmst du sie direkt in der Antwort. Grössere Vorschläge öffnen das Vorschlag-Panel.'],
+    [7, 'Kontext', 'Die Zeile «Kontext» über dem Eingabefeld zeigt, was die AI liest: Woche, Projekte, Reinigung, Notizen, Maschinen, Team, Rolle & Framework und Bibliothek. Antippen schaltet einen Bereich für diesen Chat aus oder ein.'],
+    [7, 'Direkt übernehmen', 'Schlägt die AI eine oder zwei Änderungen vor, übernimmst du sie direkt in der Antwort. Grössere Vorschläge öffnen das Vorschlag-Panel.'],
     [7, 'Aktionen an Antworten', 'Unter jeder Antwort: Kopieren und Als Notiz. Bei der letzten Antwort zusätzlich Kürzer und Konkreter.'],
     [7, 'Chats finden', 'Die Chatliste ist nach Heute, Gestern, Diese Woche und älter geordnet. Ab vier Chats durchsuchst du Titel und Inhalte.'],
     [7, 'Vorschläge zum Start', 'Ein neuer Chat zeigt zuerst, was gerade ansteht: überfällige Reinigungen, heutige Aufgaben oder ein Buch, das du liest. Diese Vorschläge tragen einen Punkt.'],
     [7, 'Formatierung', 'Antworten zeigen Listen, Zwischentitel und fett gedruckte Begriffe formatiert. Klappt eine Anfrage nicht, steht der Grund in der Meldung.'],
-    [5, 'KI-Zeichen', 'Alles, was du aus einem Vorschlag übernimmst, trägt auf der Karte ein kleines Funkeln-Symbol: Aufgaben, Projekte, Reinigungen, Notizen und Punkte in Rolle oder Framework.'],
-    [4, 'Wissen', '«Bibliothek» in der Kontextzeile holt deine Bücher in den Chat. Buchstellen stehen mit Titel und Seite unter der Antwort, eigenes Wissen der KI ist markiert.'],
-    [4, 'Abschnitt wählen', 'Schlägt die KI einen Punkt für Rolle oder Framework vor, wählst du im Vorschlag Ziel und Abschnitt, bevor du übernimmst.'],
-    [2, 'Rolle und Framework', 'Die KI kennt deine Rolle und dein Framework samt Status und Personen. Sie wendet Entscheidungsregeln an, prüft Wochen gegen deine Verantwortung und kann Punkte für Rolle oder Framework vorschlagen.'],
-    [1, 'Vorschläge', 'Änderungen macht die KI nie selbst. Sie schlägt vor, du prüfst im Vorschlag-Panel und übernimmst, was passt.'],
+    [5, 'AI-Zeichen', 'Alles, was du aus einem Vorschlag übernimmst, trägt auf der Karte ein kleines Funkeln-Symbol: Aufgaben, Projekte, Reinigungen, Notizen und Punkte in Rolle oder Framework.'],
+    [4, 'Wissen', '«Bibliothek» in der Kontextzeile holt deine Bücher in den Chat. Buchstellen stehen mit Titel und Seite unter der Antwort, eigenes Wissen der AI ist markiert.'],
+    [4, 'Abschnitt wählen', 'Schlägt die AI einen Punkt für Rolle oder Framework vor, wählst du im Vorschlag Ziel und Abschnitt, bevor du übernimmst.'],
+    [2, 'Rolle und Framework', 'Die AI kennt deine Rolle und dein Framework samt Status und Personen. Sie wendet Entscheidungsregeln an, prüft Wochen gegen deine Verantwortung und kann Punkte für Rolle oder Framework vorschlagen.'],
+    [1, 'Vorschläge', 'Änderungen macht die AI nie selbst. Sie schlägt vor, du prüfst im Vorschlag-Panel und übernimmst, was passt.'],
     [1, 'Quellen', 'Unter jeder Antwort stehen die Einträge, auf die sie sich stützt. Ein Klick springt dorthin.']
   ],
   library: [
     [8, 'Als Experiment', 'Der Kolben neben einer Kernidee macht sie zum Experiment der Woche auf Heute.'],
     [6, 'Titelbild', 'Jedes Buch zeigt die erste Seite des Dokuments als Titelbild. Bei EPUB wird das hinterlegte Cover verwendet, sonst die erste Seite.'],
     [4, 'Bücher hinzufügen', '«Hochladen» oder Dateien in die Bibliothek ziehen: PDF, EPUB, Word (DOCX), Markdown und Text. «Text einfügen» nimmt Artikel und Notizen auf. Der Text wird auf diesem Gerät gespeichert.'],
-    [4, 'Zusammenfassung und Kernideen', 'Nach dem Hochladen erstellt die KI eine Zusammenfassung und die Kernideen mit Seitenangabe. Beides kannst du im Buch ändern oder mit «Neu erstellen» ersetzen.'],
-    [4, 'Zitate', 'Im Buch Zitate mit Seite sammeln. Zitiert die KI eine Stelle, legt «Zitat merken» sie direkt beim Buch ab.'],
+    [4, 'Zusammenfassung und Kernideen', 'Nach dem Hochladen erstellt die AI eine Zusammenfassung und die Kernideen mit Seitenangabe. Beides kannst du im Buch ändern oder mit «Neu erstellen» ersetzen.'],
+    [4, 'Zitate', 'Im Buch Zitate mit Seite sammeln. Zitiert die AI eine Stelle, legt «Zitat merken» sie direkt beim Buch ab.'],
     [4, 'Lesestatus', 'Zu lesen, Am Lesen oder Gelesen stellst du im Buch ein. Oben filterst du nach Status.'],
-    [4, 'Frag die Bibliothek', 'Der Chat rechts kennt alle Bücher mit «Im Chat». Aussagen aus einem Buch tragen Titel und Seite, eigenes Wissen der KI ist markiert. Fragen und Bücher auf Deutsch oder Englisch.'],
-    [4, 'Seitenangaben', 'PDFs haben echte Seiten, Word-Dateien meist auch. Bei EPUB und Text nennt die KI Kapitel oder Abschnitte, weil diese Formate keine Seiten haben.'],
-    [4, 'Für Rolle und Framework', 'Passt eine Idee zu deiner Rolle oder deinem Framework, schlägt die KI einen Punkt vor; Ziel und Abschnitt wählst du vor dem Übernehmen. Der Stern bei einer Kernidee fragt gezielt danach.']
+    [4, 'Frag die Bibliothek', 'Der Chat rechts kennt alle Bücher mit «Im Chat». Aussagen aus einem Buch tragen Titel und Seite, eigenes Wissen der AI ist markiert. Fragen und Bücher auf Deutsch oder Englisch.'],
+    [4, 'Seitenangaben', 'PDFs haben echte Seiten, Word-Dateien meist auch. Bei EPUB und Text nennt die AI Kapitel oder Abschnitte, weil diese Formate keine Seiten haben.'],
+    [4, 'Für Rolle und Framework', 'Passt eine Idee zu deiner Rolle oder deinem Framework, schlägt die AI einen Punkt vor; Ziel und Abschnitt wählst du vor dem Übernehmen. Der Stern bei einer Kernidee fragt gezielt danach.']
   ],
   projects: [
     [2, 'Eigene Kategorien', 'Mit dem «+» rechts neben den Spalten eigene Kategorien anlegen. Name anklicken zum Umbenennen, × beim Überfahren zum Entfernen; Projekte darin wandern nach «Offen».'],
@@ -4420,7 +4436,7 @@ class Component extends DCLogic {
        fresh-install seed is written straight into tasks, not a separate list */
     tasks: WEEKLY.map(([id, day, text, note]) => ({ id, text, note, day, week: '', routine: true, done: false, tags: [], icon: '', lucide: 'file-text', due: '', repeat: 'none', project: '' })),
     guide: guideSeed(), guideEditSec: null, guideCardOpen: null, gStepDraft: {}, guideHandover: false, gcAdd: false, gcDraft: '', gcRename: null, gcFresh: null, guideView: 'board', guideOpen: {}, projColsX: [], pcAdd: false, pcDraft: '', pcRename: null, pcFresh: null, gen: null, genFields: {},
-    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
+    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, netOffline: false, netBack: false, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
     projects: [], notes: [], members: [], tags: DEFAULT_TAGS.slice(), highlightNote: null, cleanings: [], clCols: [], clOpen: null, clConfirm: null, clOver: null, clStepDraft: {}, clFilterM: '', clFilterP: '', highlightClean: null, aiChats: [], aiActive: null, aiDraft: '', aiBusy: false, aiError: null, aiPanel: null, aiEdit: null, aiMenu: null, aiRenaming: null, aiNotePick: false,
     machines: MACHINES.map((name, i) => ({ id: 'm' + i, name, faults: '', cleaning: '', note: '', image: false })),
     weekly: [], extraDays: [], newColOpen: false, newColDraft: '',
@@ -4624,11 +4640,12 @@ class Component extends DCLogic {
         setTimeout(() => { this.dvSync(); this.dvListBackups().catch(() => {}); }, 1500);
         if (dm.dirty) this.dvStatus('off', 'Änderungen warten auf Synchronisierung.');
       }
-      this._dvOnline = () => this.dvSync();
+      this._dvOnline = () => { this.setState({ netOffline: false, netBack: true }); clearTimeout(this._netT); this._netT = setTimeout(() => this.setState({ netBack: false }), 2600); this.dvSync(); };
+      if (!navigator.onLine) this.setState({ netOffline: true });
       this._dvFocus = () => { if (Date.now() - (this._dvLastFocus || 0) > 30000) { this._dvLastFocus = Date.now(); this.dvSync(); } };
       window.addEventListener('online', this._dvOnline);
       window.addEventListener('focus', this._dvFocus);
-      this._dvOffline = () => this.dvStatus('off', 'Offline · Änderungen werden lokal gespeichert.');
+      this._dvOffline = () => { this.setState({ netOffline: true, netBack: false }); this.dvStatus('off', 'Offline · Änderungen werden lokal gespeichert.'); };
       window.addEventListener('offline', this._dvOffline);
     }
     let saved = null;
@@ -4702,6 +4719,10 @@ class Component extends DCLogic {
 
   componentDidUpdate(prevProps, prevState) {
     const s = this.state;
+    if (s.aiDraft !== this._aiSeen) {
+      this._aiSeen = s.aiDraft;
+      if ((s.aiDraft || '') !== (this._aiLastInput || '')) { const el = document.querySelector('[data-aiinput]'); if (el && el.value !== (s.aiDraft || '')) el.value = s.aiDraft || ''; this._aiLastInput = s.aiDraft || ''; }
+    }
     this.syncGuideFields();
     if (this._lastGuideTab !== s.tab) { if (this._lastGuideTab === 'role' || this._lastGuideTab === 'framework') this.flushGuide(); this._lastGuideTab = s.tab; }
     this.applyShine();
@@ -5365,7 +5386,7 @@ class Component extends DCLogic {
     }));
   }
 
-  /* ---------- KI: reads everything, changes nothing until a proposal is applied ---------- */
+  /* ---------- AI: reads everything, changes nothing until a proposal is applied ---------- */
   aiChat() { return (this.state.aiChats || []).find(c => c.id === this.state.aiActive) || null; }
   aiUpdateChat(id, fn) { this.save({ aiChats: (this.state.aiChats || []).map(c => c.id === id ? fn(c) : c) }); }
   aiScroll(lib) { requestAnimationFrame(() => { const el = document.querySelector(lib ? '[data-libthread]' : '[data-aithread]'); if (!el) return; const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; el.scrollTo({ top: el.scrollHeight, behavior: calm ? 'auto' : 'smooth' }); }); }
@@ -5429,7 +5450,7 @@ class Component extends DCLogic {
     const offL = ctx ? AI_CTX.filter(([k]) => !ctx[k]).map(x => x[1]) : [];
     const wd = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'][d.getDay()];
     return [
-      'Du bist die KI im persönlichen "Second Brain" einer Schichtleitung in der Produktion. Du kennst alle Daten unten: Aufgaben (Wochenboard), Projekte, Reinigungen, Notizen, Maschinen mit Störungen, Team und Tagesroutine, dazu seine Rolle (Verantwortung, Messgrössen, Haltung) und sein Führungs-Framework (Schichtablauf, Entscheidungsregeln, drei Fragen, Delegationsleiter, Monats- und Quartalsaufgaben).',
+      'Du bist die AI im persönlichen "Second Brain" einer Schichtleitung in der Produktion. Du kennst alle Daten unten: Aufgaben (Wochenboard), Projekte, Reinigungen, Notizen, Maschinen mit Störungen, Team und Tagesroutine, dazu seine Rolle (Verantwortung, Messgrössen, Haltung) und sein Führungs-Framework (Schichtablauf, Entscheidungsregeln, drei Fragen, Delegationsleiter, Monats- und Quartalsaufgaben).',
       'Rolle und Framework sind sein Massstab. Hilf ihm, sie anzuwenden: Situationen mit der passenden Entscheidungsregel lösen, Wochen und Aufgaben gegen seine Verantwortung prüfen, sagen was er delegieren sollte und auf welcher Stufe der Delegationsleiter, und fehlende Monats- oder Quartalspunkte als Aufgaben vorschlagen. Nenne die Regel oder den Punkt, auf den du dich stützt. Er pflegt Rolle und Framework selbst. Will er dort etwas ergänzen, schlag es als Änderung add_guide_item vor; Umformulierungen bestehender Punkte schlägst du im text vor.',
       'Antworte in der Sprache der letzten Nutzernachricht. Kurz und konkret. Formatiere sparsam: Listen mit "- " oder "1. ", **fett** nur für Schlüsselbegriffe, bei längeren Antworten kurze Zwischentitel mit "## ". Keine Tabellen, keine Codeblöcke.',
       'Erfinde nichts. Steht etwas nicht in den Daten, sag das und nenne, wo du gesucht hast.',
@@ -5668,7 +5689,7 @@ class Component extends DCLogic {
   }
   helpVals(s) {
     const seen = s.helpSeen || 0;
-    const TAB_NAMES = { role: 'Rolle', framework: 'Framework', ai: 'KI', projects: 'Projekte', library: 'Bibliothek', today: 'Heute', machines: 'Maschinen', team: 'Team', settings: 'Einstellungen' };
+    const TAB_NAMES = { role: 'Rolle', framework: 'Framework', ai: 'AI', projects: 'Projekte', library: 'Bibliothek', today: 'Heute', machines: 'Maschinen', team: 'Team', settings: 'Einstellungen' };
     const own = HELP[s.tab] ? s.tab : null;
     const view = s.helpView || own || 'all';
     const allNew = [];
@@ -5999,7 +6020,7 @@ class Component extends DCLogic {
     const nTake = (g.draft || []).filter(d => d.on && d.items.length && !d.busy).length;
     const nExist = ((s.guide || {})[page] || []).length;
     return Object.assign(vals, {
-      genTitle: page === 'role' ? 'Rolle mit KI entwerfen' : 'Framework mit KI entwerfen',
+      genTitle: page === 'role' ? 'Rolle mit AI entwerfen' : 'Framework mit AI entwerfen',
       genStepLabel: g.step === 'preview' ? 'Entwurf prüfen' : g.step === 'busy' ? 'Entwirft' : 'Angaben',
       genIsInput: g.step === 'input', genIsBusy: g.step === 'busy', genIsPreview: g.step === 'preview',
       genClose: close, genCancel: () => { this._genTok = (this._genTok || 0) + 1; this.genPatch(() => ({ step: 'input' })); },
@@ -6377,9 +6398,9 @@ class Component extends DCLogic {
       lbStatus: LIB_STATUS.map(([id, label, ink]) => { const on = b.status === id; return { label, ink, on, bg: on ? 'color-mix(in srgb, ' + ink + ' 16%, transparent)' : 'transparent', line: on ? ink : 'var(--c-hair)', fg: on ? 'var(--c-ink)' : 'var(--c-soft)', pick: () => this.libPatch(b.id, { status: id }, true) }; }),
       lbLang: b.lang || 'de', setLbLang: (e) => this.libPatch(b.id, { lang: e.target.value }, true),
       lbInChat: b.inChat !== false, toggleLbChat: (e) => this.libPatch(b.id, { inChat: e.target.checked }, true),
-      lbNoText: noText, lbNoTextMsg: isPdf ? 'Kein Text gefunden. Bei gescannten PDFs kann die KI den Inhalt nicht lesen. Zusammenfassung, Ideen und Zitate kannst du selbst eintragen.' : 'In dieser Datei wurde kein Text gefunden. Zusammenfassung, Ideen und Zitate kannst du selbst eintragen.',
+      lbNoText: noText, lbNoTextMsg: isPdf ? 'Kein Text gefunden. Bei gescannten PDFs kann die AI den Inhalt nicht lesen. Zusammenfassung, Ideen und Zitate kannst du selbst eintragen.' : 'In dieser Datei wurde kein Text gefunden. Zusammenfassung, Ideen und Zitate kannst du selbst eintragen.',
       lbSummary: b.summary || '', setLbSummary: (e) => edit({ summary: e.target.value }),
-      lbGenLabel: busy ? 'Liest das Buch …' : (b.summary ? 'Neu erstellen' : 'Mit KI erstellen'), lbCantGen: busy || noText, lbGenOpacity: busy || noText ? '.5' : '1',
+      lbGenLabel: busy ? 'Liest das Buch …' : (b.summary ? 'Neu erstellen' : 'Mit AI erstellen'), lbCantGen: busy || noText, lbGenOpacity: busy || noText ? '.5' : '1',
       lbGen: () => this.libGenerate(b.id, false), lbGenErr: gen[b.id] === 'err',
       lbIdeas: (b.ideas || []).map((t, i) => ({
         text: t,
@@ -6518,7 +6539,7 @@ class Component extends DCLogic {
           shorter: () => this.aiSend('Sag das kürzer, in höchstens drei Sätzen.'),
           concrete: () => this.aiSend('Mach das konkreter: nächste Schritte mit Tag und wer sie erledigt.'),
           noted: !!m.noted, noteLabel: m.noted ? 'Als Notiz gespeichert' : 'Als Notiz',
-          toNote: () => { if (m.noted) return; const id = Date.now(); const st = this.state; const note = { id, title: (chat.title || 'KI-Antwort').replace(/…$/, '').trim(), body: m.text || '', kind: 'Sitzung', project: '', date: new Date().toLocaleDateString('de-CH'), ai: true }; this.save({ notes: [note].concat(st.notes), aiChats: st.aiChats.map(c => c.id !== chat.id ? c : Object.assign({}, c, { msgs: c.msgs.map((x, i) => i === j ? Object.assign({}, x, { noted: id }) : x) })) }); },
+          toNote: () => { if (m.noted) return; const id = Date.now(); const st = this.state; const note = { id, title: (chat.title || 'AI-Antwort').replace(/…$/, '').trim(), body: m.text || '', kind: 'Sitzung', project: '', date: new Date().toLocaleDateString('de-CH'), ai: true }; this.save({ notes: [note].concat(st.notes), aiChats: st.aiChats.map(c => c.id !== chat.id ? c : Object.assign({}, c, { msgs: c.msgs.map((x, i) => i === j ? Object.assign({}, x, { noted: id }) : x) })) }); },
           appliedLabel: pr && pr.applied ? 'Vorschlag übernommen · ' + pr.applied.n + ' von ' + pr.applied.total : '',
           proposalLabel: 'Vorschlag · ' + cnt + (cnt === 1 ? ' Änderung' : ' Änderungen'),
           propBorder: s.aiPanel && s.aiPanel.mi === j ? 'var(--c-accent)' : 'color-mix(in srgb, var(--c-accent) 45%, var(--c-hair))',
@@ -6536,6 +6557,15 @@ class Component extends DCLogic {
         this.setState({ aiError: null, aiChats: this.state.aiChats.map(c => c.id !== e.chat ? c : Object.assign({}, c, { msgs: c.msgs.length && c.msgs[c.msgs.length - 1].role === 'user' ? c.msgs.slice(0, -1) : c.msgs })) }, () => this.aiSend(e.text, e.lib ? { lib: true } : null));
       },
       aiDraft: s.aiDraft || '', setAiDraft: (e) => this.setState({ aiDraft: e.target.value }),
+      /* the composer is uncontrolled: a controlled value could be overwritten by a
+         re-render mid-keystroke (a sync landing, the installed app's focus refresh),
+         which made typing look dead. Programmatic drafts are pushed in componentDidUpdate. */
+      aiInputRef: this._aiRef || (this._aiRef = (el) => {
+        if (!el || el._aiw) return;
+        el._aiw = true;
+        el.value = this.state.aiDraft || '';
+        el.addEventListener('input', (e) => { this._aiLastInput = e.target.value; this.setState({ aiDraft: e.target.value }); });
+      }),
       aiKey: (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); this.aiSend(); } },
       aiSendNow: () => this.aiSend(), aiCantSend: !!s.aiBusy || !(s.aiDraft || '').trim(), aiSendOpacity: (!!s.aiBusy || !(s.aiDraft || '').trim()) ? '.45' : '1',
       aiHasPanel: !!prop, aiPanelFlag: prop ? '1' : '0',
@@ -7219,7 +7249,7 @@ class Component extends DCLogic {
     const o = this.aiParse(raw);
     return o && typeof o === 'object' ? o : null;
   }
-  /* ── KI-Anbieter ────────────────────────────────────────────────────
+  /* ── AI-Anbieter ────────────────────────────────────────────────────
      every call site builds an Anthropic-style body (system, messages, tools with
      a local run() callback, tool_choice). llm() keeps that contract for all
      providers: the built-in one here, Claude with an own key, Gemini and Groq.
@@ -7265,8 +7295,8 @@ class Component extends DCLogic {
     const msgs = (b.messages || []).map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', text: this.llmText(m.content) })).filter(m => m.text);
     const fail = async (r, who) => { let t = ''; try { const j = await r.json(); t = (j.error && (j.error.message || j.error.type)) || JSON.stringify(j).slice(0, 200); } catch (e) {} const err = new Error(who + ' ' + r.status + (t ? ': ' + t : '')); err.status = r.status; throw err; };
     if (p === 'here') return window.claude.complete(b);
-    if (p === 'none') throw new Error('Kein KI-Anbieter eingerichtet · Appearance → KI-Anbieter.');
-    if (!navigator.onLine) throw new Error('Offline · die KI braucht eine Internetverbindung.');
+    if (p === 'none') throw new Error('Kein AI-Anbieter eingerichtet · Appearance → AI-Anbieter.');
+    if (!navigator.onLine) throw new Error('Offline · die AI braucht eine Internetverbindung.');
     if (p === 'claude') {
       if (!c.claudeKey) throw new Error('Kein Claude-Key hinterlegt.');
       const req = Object.assign({}, b, { model: c.claudeModel || 'claude-sonnet-4-5', system: sys || undefined, messages: msgs.map(m => ({ role: m.role, content: m.text })), tools: tools.length ? tools.map(t => ({ name: t.name, description: t.description, input_schema: t.input_schema })) : undefined });
@@ -7340,7 +7370,7 @@ class Component extends DCLogic {
       for (const tc of (m.tool_calls || [])) { const t = tools.find(x => x.name === tc.function.name); let a = {}; try { a = JSON.parse(tc.function.arguments || '{}'); } catch (e) {} if (t && t.run) await t.run(a); if (!m.content) return JSON.stringify(a); }
       return m.content || '';
     }
-    throw new Error('Unbekannter KI-Anbieter.');
+    throw new Error('Unbekannter AI-Anbieter.');
   }
 
   /* running monthly tally so Claude spend is visible; free tiers just count calls */
@@ -7414,7 +7444,7 @@ class Component extends DCLogic {
       let got = null;
       const tool = { name: 'antwort', description: 'Antwort', input_schema: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }, run: async (i) => { got = i; return 'ok'; } };
       await this.llm({ max_tokens: 200, system: 'Antworte kurz auf Deutsch.', messages: [{ role: 'user', content: 'Sag in fünf Wörtern Hallo.' }], tools: [tool], tool_choice: { type: 'tool', name: 'antwort' } });
-      const who = { here: 'Eingebaute KI', claude: 'Claude', gemini: 'Gemini', groq: 'Groq' }[this.aiPick(false)];
+      const who = { here: 'Eingebaute AI', claude: 'Claude', gemini: 'Gemini', groq: 'Groq' }[this.aiPick(false)];
       this.setState({ aiTestMsg: who + ' antwortet: «' + ((got && got.text) || '…') + '»', aiTestOk: true });
     } catch (e) { this.setState({ aiTestMsg: String(e && e.message || e), aiTestOk: false }); }
   }
@@ -7434,7 +7464,7 @@ class Component extends DCLogic {
     const calls = u.calls || {};
     return {
       aiProvOpts: opts,
-      aiActiveLine: act === 'none' ? 'Kein Anbieter aktiv · einen Key eintragen.' : 'Aktiv: ' + ({ here: 'eingebaute KI (nur in dieser Umgebung)', gemini: 'Gemini (kostenlos)', claude: 'Claude (eigener Key)', groq: 'Groq (kostenlos)' })[act],
+      aiActiveLine: act === 'none' ? 'Kein Anbieter aktiv · einen Key eintragen.' : 'Aktiv: ' + ({ here: 'eingebaute AI (nur in dieser Umgebung)', gemini: 'Gemini (kostenlos)', claude: 'Claude (eigener Key)', groq: 'Groq (kostenlos)' })[act],
       aiActiveInk: act === 'none' ? 'var(--c-warn-ink)' : 'var(--c-soft)',
       aiGeminiKey: c.geminiKey || '', setAiGeminiKey: set('geminiKey'), aiGeminiModel: c.geminiModel, setAiGeminiModel: set('geminiModel'),
       aiClaudeKey: c.claudeKey || '', setAiClaudeKey: set('claudeKey'), aiClaudeModel: c.claudeModel, setAiClaudeModel: set('claudeModel'),
@@ -7630,7 +7660,7 @@ class Component extends DCLogic {
       tdRevStart: () => this.setState({ revOpen: true, revDraft: s.revDraft || { good: '', bad: '', change: '', focus: '' } }),
       tdRevGood: rd.good, tdRevBad: rd.bad, tdRevChange: rd.change, tdRevFocus: rd.focus,
       setTdRevGood: rdSet('good'), setTdRevBad: rdSet('bad'), setTdRevChange: rdSet('change'), setTdRevFocus: rdSet('focus'),
-      tdRevBusy: !!s.revBusy, tdRevAiLabel: s.revBusy ? 'Denkt nach …' : 'Fokus mit KI vorschlagen', tdRevAi: () => this.revFocusAi(),
+      tdRevBusy: !!s.revBusy, tdRevAiLabel: s.revBusy ? 'Denkt nach …' : 'Fokus mit AI vorschlagen', tdRevAi: () => this.revFocusAi(),
       tdRevHasErr: !!s.revErr, tdRevErr: s.revErr || '',
       tdRevSave: () => { const d = this.state.revDraft || {}; if (!((d.good || '') + (d.bad || '') + (d.change || '') + (d.focus || '')).trim()) { this.setState({ revOpen: false }); return; } this.save({ reviews: (this.state.reviews || []).filter(r => r.week !== nowW).concat([{ id: 'r' + Date.now(), week: nowW, date: tdy, good: d.good || '', bad: d.bad || '', change: d.change || '', focus: (d.focus || '').trim() }]), revOpen: false, revDraft: null }); },
       tdRevLater: () => this.setState({ revOpen: false }),
@@ -7663,7 +7693,7 @@ class Component extends DCLogic {
       qcKey: (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); if (this.state.qc && this.state.qc.result) this.qcApply(); else this.qcInbox(); } },
       qcHasResult: !!sm, qcKind: sm ? sm.kind : '', qcTitle: sm ? sm.title : '', qcHasDetail: !!(sm && sm.detail), qcDetail: sm ? sm.detail : '',
       qcHasError: !!(qc && qc.err), qcError: qc ? qc.err : '',
-      qcSecondaryLabel: res ? 'Doch in die Inbox' : (qc && qc.busy ? 'Sortiert …' : 'KI sortieren'),
+      qcSecondaryLabel: res ? 'Doch in die Inbox' : (qc && qc.busy ? 'Sortiert …' : 'AI sortieren'),
       qcSecondary: () => { if (this.state.qc && this.state.qc.result) this.qcInbox(); else this.qcSort(); },
       qcCantSecondary: !hasTxt || !!(qc && qc.busy), qcSecOpacity: hasTxt && !(qc && qc.busy) ? '1' : '.45',
       qcPrimaryLabel: res ? 'Übernehmen' : 'In die Inbox', qcPrimary: () => { if (this.state.qc && this.state.qc.result) this.qcApply(); else this.qcInbox(); },
@@ -9088,6 +9118,8 @@ class Component extends DCLogic {
       importData: (e) => this.importFile(e),
       ...this.aiVals(),
       ...this.dvVals(),
+      netOffline: !!s.netOffline, netBack: !!s.netBack && !s.netOffline,
+      netSub: (s.drive || {}).connected ? 'Änderungen werden lokal gespeichert und synchronisiert, sobald du online bist.' : 'Änderungen werden in diesem Browser gespeichert.',
       dataStatus: s.dataStatus,
       ...this.extraVals(s)
     };
