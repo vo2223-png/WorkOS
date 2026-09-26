@@ -17,7 +17,10 @@
 <meta name="apple-mobile-web-app-title" content="Second Brain">
 <meta name="theme-color" content="#101215">
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script src="./slot-shim.js"></script>
 <script src="./image-slot.js"></script>
+<script src="./scroll-top.js" defer></script>
+<script src="./gooey-controls.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Instrument+Serif&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Jost:wght@400;500;700;900&amp;family=Roboto+Slab:wght@300;400;700&amp;display=swap">
@@ -62,10 +65,10 @@
   .eyebrow { font-size: var(--t-eyebrow); font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: color-mix(in srgb, var(--c-faint) 45%, var(--c-ink)); }
   /* at eyebrow size the base accent falls under 4.5:1 on the shell, so small caps print one step lighter */
   .eyebrow[style*="--c-accent"], .om-eyebrow-accent { color: color-mix(in srgb, var(--c-accent-lift) 72%, var(--c-ink)) !important; }
-  input[type="checkbox"] { appearance: none; width: 18px; height: 18px; flex: none; border: 1.25px solid var(--c-hair); border-radius: 6px; background: var(--c-input); cursor: pointer; position: relative; transition: background .16s var(--e-soft), border-color .16s var(--e-soft); }
-  input[type="checkbox"]:hover { border-color: var(--c-accent); }
-  input[type="checkbox"]:checked { background: var(--c-accent); border-color: var(--c-accent); animation: om-tick .32s var(--e-soft); }
-  input[type="checkbox"]:checked::after { content: ""; position: absolute; left: 5.5px; top: 2.5px; width: 4px; height: 8px; border: solid var(--c-on-accent); border-width: 0 1.6px 1.6px 0; transform: rotate(45deg); }
+  input[type="checkbox"]:not(.g-check):not(.g-switch) { appearance: none; width: 18px; height: 18px; flex: none; border: 1.25px solid var(--c-hair); border-radius: 6px; background: var(--c-input); cursor: pointer; position: relative; transition: background .16s var(--e-soft), border-color .16s var(--e-soft); }
+  input[type="checkbox"]:not(.g-check):not(.g-switch):hover { border-color: var(--c-accent); }
+  input[type="checkbox"]:not(.g-check):not(.g-switch):checked { background: var(--c-accent); border-color: var(--c-accent); animation: om-tick .32s var(--e-soft); }
+  input[type="checkbox"]:not(.g-check):not(.g-switch):checked::after { content: ""; position: absolute; left: 5.5px; top: 2.5px; width: 4px; height: 8px; border: solid var(--c-on-accent); border-width: 0 1.6px 1.6px 0; transform: rotate(45deg); }
   /* Heute cards only: soft neumorphic slabs (after Uiverse.io / Codewithvinay), dual-lit for the dark desk */
   .om-neuwrap .om-spec { border-radius: var(--c-radius) !important; }
   /* all cards: one glass slab (after Uiverse.io / joe-watson-sbf) — single-layered, blurred, warm hover glow */
@@ -402,7 +405,7 @@
   }
   /* a check sends one ring out from the box */
   @keyframes om-ripple { from { box-shadow: 0 0 0 0 var(--c-accent); opacity: .5; } to { box-shadow: 0 0 0 9px var(--c-accent); opacity: 0; } }
-  input[type="checkbox"]:checked::before {
+  input[type="checkbox"]:not(.g-check):not(.g-switch):checked::before {
     content: ""; position: absolute; inset: 0; border-radius: 6px; pointer-events: none;
     animation: om-ripple .5s var(--e-soft) forwards;
   }
@@ -844,7 +847,7 @@
   body[data-dragging="1"] .om-work .om-spec:hover, body[data-dragging] .om-work .om-lift:hover {
     box-shadow: none !important;
   }
-  .om-work input[type="checkbox"] { border: none !important; }
+  .om-work input[type="checkbox"]:not(.g-check):not(.g-switch) { border: none !important; }
   .om-work [data-ring]::before { display: none !important; }
   /* flat cards still need a hover tell — brighten in place instead of a border/glow */
   .om-work .om-card:hover, .om-work [data-cardbg]:hover, .om-work .om-lift:hover, .om-work .om-card[data-picked="1"] {
@@ -976,7 +979,7 @@
                 </sc-for>
               </div>
               <select value="{{ lbLang }}" onChange="{{ setLbLang }}" aria-label="Sprache" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); color: var(--c-ink); padding: 6px 10px; font-size: var(--t-sm);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;"><option value="de">Deutsch</option><option value="en">Englisch</option></select>
-              <label title="Die AI nutzt dieses Buch im Chat" style="display: flex; align-items: center; gap: 7px; font-size: var(--t-sm); color: var(--c-soft); white-space: nowrap; flex: none; cursor: pointer;"><input type="checkbox" checked="{{ lbInChat }}" onChange="{{ toggleLbChat }}" style="accent-color: var(--c-accent); width: 16px; height: 16px; margin: 0;"><span>Im Chat</span></label>
+              <label title="Die AI nutzt dieses Buch im Chat" style="display: flex; align-items: center; gap: 7px; font-size: var(--t-sm); color: var(--c-soft); white-space: nowrap; flex: none; cursor: pointer;"><input type="checkbox" class="g-switch" checked="{{ lbInChat }}" onChange="{{ toggleLbChat }}" style="height: 16px; margin: 0;"><span>Im Chat</span></label>
             </div>
             <sc-if value="{{ lbNoText }}" hint-placeholder-val="{{ false }}">
               <span style="border-radius: 12px; background: var(--c-warn); color: var(--c-warn-ink); padding: 10px 14px; font-size: var(--t-sm); line-height: 1.5;">{{ lbNoTextMsg }}</span>
@@ -1305,7 +1308,7 @@
               <sc-for list="{{ b.items }}" as="r" hint-placeholder-count="4">
                 <sc-if value="{{ r.editing }}" hint-placeholder-val="{{ false }}">
                   <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: var(--c-panel); border: 1px solid var(--c-hair); border-radius: var(--c-radius-sm); padding: 8px 10px;">
-                    <input type="checkbox" checked="{{ r.done }}" onChange="{{ r.toggle }}" aria-label="erledigt" style="flex: none; accent-color: var(--c-accent); width: 17px; height: 17px;">
+                    <input type="checkbox" class="g-check" checked="{{ r.done }}" onChange="{{ r.toggle }}" aria-label="erledigt" style="flex: none;">
                     <input value="{{ r.text }}" onChange="{{ r.rename }}" aria-label="Punkt umbenennen" style="flex: 1; min-width: 128px; box-sizing: border-box; border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 7px 13px; font-size: .92em;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
                     <select value="{{ r.block }}" onChange="{{ r.setBlock }}" aria-label="Block" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 7px 11px; font-size: .82em;">
                       <option value="morning">morgens</option>
@@ -1323,7 +1326,7 @@
                 <sc-if value="{{ r.viewing }}" hint-placeholder-val="{{ true }}">
                   <div class="om-lift {{ r.fadeClass }}" style="display: flex; gap: 4px; align-items: center; background: {{ r.bg }}; border: 1px solid {{ r.border }}; border-radius: var(--c-radius-sm); padding-right: 6px;">
                     <label style="flex: 1; min-width: 0; display: flex; gap: 11px; align-items: center; padding: 10px 0 10px 13px; cursor: pointer;">
-                      <input type="checkbox" checked="{{ r.done }}" onChange="{{ r.toggle }}" style="flex: none; accent-color: var(--c-accent); width: 17px; height: 17px;">
+                      <input type="checkbox" class="g-check" checked="{{ r.done }}" onChange="{{ r.toggle }}" style="flex: none;">
                       <span class="om-strike" data-on="{{ r.strikeOn }}" style="color: {{ r.ink }}; font-weight: 500; letter-spacing: -.005em;">{{ r.text }}</span>
                     </label>
                     <button onClick="{{ r.edit }}" aria-label="Punkt bearbeiten" title="bearbeiten" style="flex: none; border: none; background: transparent; color: var(--c-faint); min-width: 44px; min-height: 44px; border-radius: 999px; display: flex; align-items: center; justify-content: center;" style-hover="color: var(--c-accent); background: var(--c-panel);" style-focus="outline: 2px solid var(--c-accent); outline-offset: -4px; color: var(--c-accent);">
@@ -1361,9 +1364,17 @@
             <h2 style="font-size: var(--t-lg);">Inbox</h2>
             <input value="{{ draftText }}" onChange="{{ setDraftText }}" onKeyDown="{{ draftKey }}" placeholder="Was ist zu tun?" aria-label="Neue Aufgabe" style="width: 100%; box-sizing: border-box; border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 11px 17px;">
             <div style="display: flex; flex-wrap: wrap; gap: 7px;">
-              <select value="{{ draftDay }}" onChange="{{ setDraftDay }}" aria-label="Tag" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 9px 14px; font-size: .9em;">
-                <sc-for list="{{ dayOptions }}" as="d" hint-placeholder-count="6"><option value="{{ d.id }}">{{ d.label }}</option></sc-for>
-              </select>
+              <div data-daypop-root="1" style="position: relative; display: flex; align-items: center; gap: 9px; z-index: {{ draftDayPop.z }};">
+                <button type="button" onClick="{{ draftDayPop.toggle }}" aria-expanded="{{ draftDayPop.expanded }}" aria-haspopup="listbox" aria-label="{{ draftDayPop.aria }}" title="Tag wählen" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--c-on-accent); background: linear-gradient(150deg, color-mix(in srgb, var(--c-accent) 82%, white), var(--c-accent)); box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--c-accent) 80%, black), 0 2px 6px rgba(0,0,0,.22); transform: {{ draftDayPop.rot }}; transition: transform .32s cubic-bezier(.3,1.35,.4,1);" style-hover="transform: {{ draftDayPop.rotHover }};" style-active="transform: {{ draftDayPop.rotActive }};">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                </button>
+                <span style="font-size: 13.5px; font-weight: 620; color: var(--c-soft); white-space: nowrap;" class="{{ draftDayPop.flicker }}" key="{{ draftDayPop.flickKey }}">{{ draftDayPop.label }}</span>
+                <div role="listbox" aria-label="Tag" style="position: absolute; left: 0px; top: calc(100% + 10px); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; pointer-events: {{ draftDayPop.pe }};">
+                  <sc-for list="{{ draftDayPop.items }}" as="dz" hint-placeholder-count="0">
+                    <button type="button" role="option" aria-selected="{{ dz.on }}" tabIndex="{{ dz.tab }}" onClick="{{ dz.pick }}" style="min-height: 40px; padding: 0 18px; border: none; border-radius: 99px; background: {{ dz.bg }}; color: {{ dz.fg }}; font-family: inherit; font-size: 13.5px; font-weight: 620; white-space: nowrap; cursor: pointer; box-shadow: 0 10px 24px -14px rgba(0,0,0,.9), inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 8%, transparent); opacity: {{ dz.op }}; transform: {{ dz.tf }}; transform-origin: 22px 50%; transition: opacity .22s ease {{ dz.delay }}, transform .3s cubic-bezier(.2,1.35,.4,1) {{ dz.delay }}, background .18s ease, color .18s ease;" style-hover="background: {{ dz.hoverBg }}; color: {{ dz.hoverFg }};">{{ dz.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
               <select value="{{ draftProject }}" onChange="{{ setDraftProject }}" aria-label="Projekt" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 9px 14px; font-size: .9em; max-width: 100%;">
                 <option value="">ohne Projekt</option>
                 <sc-for list="{{ projectNames }}" as="p" hint-placeholder-count="0"><option value="{{ p.name }}">{{ p.name }}</option></sc-for>
@@ -1386,7 +1397,7 @@
             </div>
             <sc-for list="{{ openTasks }}" as="t" hint-placeholder-count="0">
               <div class="om-lift {{ t.fadeClass }}" style="display: flex; gap: 11px; align-items: flex-start; background: var(--c-panel); border: 1px solid var(--c-hair); border-radius: var(--c-radius-sm); padding: 11px 13px;">
-                <input type="checkbox" checked="{{ t.done }}" onChange="{{ t.toggle }}" aria-label="erledigt" style="margin-top: 2px; flex: none; accent-color: var(--c-accent); width: 17px; height: 17px;">
+                <input type="checkbox" class="g-check" checked="{{ t.done }}" onChange="{{ t.toggle }}" aria-label="erledigt" style="margin-top: 2px; flex: none;">
                 <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px;">
                   <span style="font-weight: 500; letter-spacing: -.005em;">{{ t.text }}</span>
                   <div style="display: flex; flex-wrap: wrap; gap: 5px;">
@@ -1423,9 +1434,17 @@
         </div>
         <div style="display: flex; gap: 7px; flex-wrap: wrap; align-items: center; margin-left: auto;">
           <input value="{{ bdText }}" onChange="{{ setBdText }}" onKeyDown="{{ bdKey }}" placeholder="Karte hinzufügen" aria-label="Neue Karte" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 0 16px; height: 40px; font-size: .9em; min-width: 170px;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
-          <select value="{{ bdDay }}" onChange="{{ setBdDay }}" aria-label="Tag" style="border: 1px solid var(--c-hair); border-radius: 999px; background: var(--c-input); padding: 0 13px; height: 40px; font-size: .86em;">
-            <sc-for list="{{ dayOptionsPlain }}" as="d" hint-placeholder-count="5"><option value="{{ d.id }}">{{ d.label }}</option></sc-for>
-          </select>
+          <div data-daypop-root="1" style="position: relative; display: flex; align-items: center; gap: 9px; z-index: {{ bdDayPop.z }};">
+                <button type="button" onClick="{{ bdDayPop.toggle }}" aria-expanded="{{ bdDayPop.expanded }}" aria-haspopup="listbox" aria-label="{{ bdDayPop.aria }}" title="Tag wählen" style="flex: none; width: 44px; height: 44px; border: none; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--c-on-accent); background: linear-gradient(150deg, color-mix(in srgb, var(--c-accent) 82%, white), var(--c-accent)); box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--c-accent) 80%, black), 0 2px 6px rgba(0,0,0,.22); transform: {{ bdDayPop.rot }}; transition: transform .32s cubic-bezier(.3,1.35,.4,1);" style-hover="transform: {{ bdDayPop.rotHover }};" style-active="transform: {{ bdDayPop.rotActive }};">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                </button>
+                <span style="font-size: 13.5px; font-weight: 620; color: var(--c-soft); white-space: nowrap;" class="{{ bdDayPop.flicker }}" key="{{ bdDayPop.flickKey }}">{{ bdDayPop.label }}</span>
+                <div role="listbox" aria-label="Tag" style="position: absolute; left: 0px; top: calc(100% + 10px); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; pointer-events: {{ bdDayPop.pe }};">
+                  <sc-for list="{{ bdDayPop.items }}" as="dz" hint-placeholder-count="0">
+                    <button type="button" role="option" aria-selected="{{ dz.on }}" tabIndex="{{ dz.tab }}" onClick="{{ dz.pick }}" style="min-height: 40px; padding: 0 18px; border: none; border-radius: 99px; background: {{ dz.bg }}; color: {{ dz.fg }}; font-family: inherit; font-size: 13.5px; font-weight: 620; white-space: nowrap; cursor: pointer; box-shadow: 0 10px 24px -14px rgba(0,0,0,.9), inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 8%, transparent); opacity: {{ dz.op }}; transform: {{ dz.tf }}; transform-origin: 22px 50%; transition: opacity .22s ease {{ dz.delay }}, transform .3s cubic-bezier(.2,1.35,.4,1) {{ dz.delay }}, background .18s ease, color .18s ease;" style-hover="background: {{ dz.hoverBg }}; color: {{ dz.hoverFg }};">{{ dz.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
           <button class="om-cta" onClick="{{ addBoardCard }}" style="border: none; border-radius: 999px; background: var(--c-accent); color: var(--c-on-accent); padding: 0 8px 0 17px; height: 40px; font-weight: 700; font-size: .88em; display: flex; align-items: center; gap: 9px; box-shadow: var(--sh-amb);">
             <span>Neu</span>
             <span class="om-knob" style="width: 24px; height: 24px; border-radius: 999px; background: rgba(0,0,0,.14); display: flex; align-items: center; justify-content: center;">
@@ -1540,7 +1559,7 @@
 
             <sc-for list="{{ col.cleanCards }}" as="w" hint-placeholder-count="0">
               <div class="{{ w.fadeClass }}" style="border: 1px dashed var(--c-accent); border-radius: var(--c-radius-sm); padding: 9px 11px; display: flex; gap: 9px; align-items: flex-start; background: color-mix(in srgb, var(--c-accent) 6%, transparent);">
-                <input type="checkbox" onChange="{{ w.complete }}" aria-label="Reinigung erledigt" style="margin-top: 2px; flex: none; accent-color: var(--c-accent); width: 16px; height: 16px;">
+                <input type="checkbox" class="g-check" onChange="{{ w.complete }}" aria-label="Reinigung erledigt" style="margin-top: 2px; flex: none;">
                 <button onClick="{{ w.go }}" style="flex: 1; min-width: 0; border: none; background: transparent; padding: 0; text-align: left; display: flex; flex-direction: column; gap: 3px; cursor: pointer; color: var(--c-ink);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
                   <span style="display: flex; align-items: center; gap: 6px; font-size: .88em; font-weight: 600; line-height: 1.3;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none; color: var(--c-accent-lift);"><use href="#ic-drop"></use></svg><span>{{ w.title }}</span></span>
                   <span style="font-size: .76em; color: var(--c-soft);">{{ w.meta }}</span>
@@ -1629,7 +1648,7 @@
                   <input value="{{ ed.text }}" onChange="{{ ed.rename }}" aria-label="Titel" style="width: 100%; box-sizing: border-box; border: 1px solid var(--c-hair); border-radius: 9px; background: var(--c-input); padding: 7px 11px; font-size: .92em; font-weight: 600;">
                   <input value="{{ ed.note }}" onChange="{{ ed.setNote }}" placeholder="Notiz" aria-label="Notiz" style="width: 100%; box-sizing: border-box; border: 1px solid var(--c-hair); border-radius: 9px; background: var(--c-input); padding: 7px 11px; font-size: .86em;">
                   <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                    <input type="checkbox" checked="{{ ed.hasImage }}" onChange="{{ ed.toggleImage }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                    <input type="checkbox" class="g-switch" checked="{{ ed.hasImage }}" onChange="{{ ed.toggleImage }}" style="height: 16px;">
                     <span>Bild auf der Karte</span>
                   </label>
                   <sc-if value="{{ ed.hasImage }}" hint-placeholder-val="{{ false }}">
@@ -1638,19 +1657,19 @@
                     </div>
                   </sc-if>
                   <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                    <input type="checkbox" checked="{{ ed.checked }}" onChange="{{ ed.toggle }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                    <input type="checkbox" class="g-check" checked="{{ ed.checked }}" onChange="{{ ed.toggle }}" style="height: 16px;">
                     erledigt
                   </label>
                   <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                    <input type="checkbox" checked="{{ ed.isRoutine }}" onChange="{{ ed.toggleRoutine }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                    <input type="checkbox" class="g-switch" checked="{{ ed.isRoutine }}" onChange="{{ ed.toggleRoutine }}" style="height: 16px;">
                     <span>Routine — jede Woche auf diesem Tag</span>
                   </label>
                   <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                    <input type="checkbox" checked="{{ ed.showIconEd }}" onChange="{{ ed.toggleIcon }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                    <input type="checkbox" class="g-switch" checked="{{ ed.showIconEd }}" onChange="{{ ed.toggleIcon }}" style="height: 16px;">
                     <span>Icon auf der Karte zeigen</span>
                   </label>
                   <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                    <input type="checkbox" checked="{{ ed.isWichtig }}" onChange="{{ ed.toggleWichtig }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                    <input type="checkbox" class="g-switch" checked="{{ ed.isWichtig }}" onChange="{{ ed.toggleWichtig }}" style="height: 16px;">
                     <span>Wichtig — Karte blinkt durchgehend</span>
                   </label>
                   <div style="display: flex; flex-wrap: wrap; gap: 4px;">
@@ -1703,9 +1722,17 @@
                       <option value="weekly">wöchentlich</option>
                       <option value="monthly">monatlich</option>
                     </select>
-                    <select value="{{ ed.day }}" onChange="{{ ed.setDay }}" aria-label="Tag" style="border: 1px solid var(--c-hair); border-radius: 9px; background: var(--c-input); padding: 6px 9px; font-size: .8em;">
-                      <sc-for list="{{ dayOptionsShort }}" as="d" hint-placeholder-count="6"><option value="{{ d.id }}">{{ d.label }}</option></sc-for>
-                    </select>
+                    <div data-daypop-root="1" style="position: relative; display: flex; align-items: center; gap: 9px; z-index: {{ ed.dayPop.z }};">
+                <button type="button" onClick="{{ ed.dayPop.toggle }}" aria-expanded="{{ ed.dayPop.expanded }}" aria-haspopup="listbox" aria-label="{{ ed.dayPop.aria }}" title="Tag wählen" style="flex: none; width: 38px; height: 38px; border: none; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: var(--c-on-accent); background: linear-gradient(150deg, color-mix(in srgb, var(--c-accent) 82%, white), var(--c-accent)); box-shadow: 0 12px 26px -12px color-mix(in srgb, var(--c-accent) 80%, black), 0 2px 6px rgba(0,0,0,.22); transform: {{ ed.dayPop.rot }}; transition: transform .32s cubic-bezier(.3,1.35,.4,1);" style-hover="transform: {{ ed.dayPop.rotHover }};" style-active="transform: {{ ed.dayPop.rotActive }};">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                </button>
+                <span style="font-size: 12.5px; font-weight: 620; color: var(--c-soft); white-space: nowrap;" class="{{ ed.dayPop.flicker }}" key="{{ ed.dayPop.flickKey }}">{{ ed.dayPop.label }}</span>
+                <div role="listbox" aria-label="Tag" style="position: absolute; left: 0px; top: calc(100% + 10px); display: flex; flex-direction: column; align-items: flex-start; gap: 8px; pointer-events: {{ ed.dayPop.pe }};">
+                  <sc-for list="{{ ed.dayPop.items }}" as="dz" hint-placeholder-count="0">
+                    <button type="button" role="option" aria-selected="{{ dz.on }}" tabIndex="{{ dz.tab }}" onClick="{{ dz.pick }}" style="min-height: 34px; padding: 0 14px; border: none; border-radius: 99px; background: {{ dz.bg }}; color: {{ dz.fg }}; font-family: inherit; font-size: 12.5px; font-weight: 620; white-space: nowrap; cursor: pointer; box-shadow: 0 10px 24px -14px rgba(0,0,0,.9), inset 0 0 0 1px color-mix(in srgb, var(--c-ink) 8%, transparent); opacity: {{ dz.op }}; transform: {{ dz.tf }}; transform-origin: 22px 50%; transition: opacity .22s ease {{ dz.delay }}, transform .3s cubic-bezier(.2,1.35,.4,1) {{ dz.delay }}, background .18s ease, color .18s ease;" style-hover="background: {{ dz.hoverBg }}; color: {{ dz.hoverFg }};">{{ dz.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
                   </div>
                   <div style="display: flex; gap: 6px; justify-content: space-between; align-items: center;">
                     <button onClick="{{ ed.close }}" style="border: 1px solid var(--c-hair); background: transparent; color: var(--c-accent); border-radius: 999px; padding: 6px 15px; font-size: .82em; font-weight: 600; min-height: 44px;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">Fertig</button>
@@ -1819,7 +1846,7 @@
                       <span class="eyebrow">Schritte</span>
                       <sc-for list="{{ p.items }}" as="i" hint-placeholder-count="0">
                         <label onPointerDown="{{ p.stop }}" style="display: flex; gap: 8px; align-items: center; cursor: pointer; font-size: .82em;">
-                          <input type="checkbox" checked="{{ i.done }}" onChange="{{ i.toggle }}" style="accent-color: var(--c-accent); width: 14px; height: 14px;">
+                          <input type="checkbox" class="g-check g-sm" checked="{{ i.done }}" onChange="{{ i.toggle }}" style="height: 14px;">
                           <span class="om-strike" data-on="{{ i.strikeOn }}" style="color: {{ i.ink }};">{{ i.text }}</span>
                         </label>
                       </sc-for>
@@ -1832,7 +1859,7 @@
                     <input value="{{ p.nameVal }}" onChange="{{ p.rename }}" aria-label="Projektname" style="width: 100%; box-sizing: border-box; border: 1px solid var(--c-hair); border-radius: 9px; background: var(--c-input); padding: 6px 10px; font-size: .86em; font-weight: 600;">
                     <input value="{{ p.noteVal }}" onChange="{{ p.setNote }}" placeholder="Notiz" aria-label="Notiz" style="width: 100%; box-sizing: border-box; border: 1px solid var(--c-hair); border-radius: 9px; background: var(--c-input); padding: 6px 10px; font-size: .84em;">
                     <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                      <input type="checkbox" checked="{{ p.hasImage }}" onChange="{{ p.toggleImage }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                      <input type="checkbox" class="g-switch" checked="{{ p.hasImage }}" onChange="{{ p.toggleImage }}" style="height: 16px;">
                       <span>Bild auf der Karte</span>
                     </label>
                     <div style="display: flex; gap: 5px; flex-wrap: wrap;">
@@ -1886,7 +1913,7 @@
                     </sc-for>
                     <sc-for list="{{ p.items }}" as="i" hint-placeholder-count="0">
                       <label style="display: flex; gap: 8px; align-items: center; cursor: pointer; font-size: .86em;">
-                        <input type="checkbox" checked="{{ i.done }}" onChange="{{ i.toggle }}" style="accent-color: var(--c-accent); width: 15px; height: 15px;">
+                        <input type="checkbox" class="g-check g-sm" checked="{{ i.done }}" onChange="{{ i.toggle }}" style="height: 15px;">
                         <span class="om-strike" data-on="{{ i.strikeOn }}" style="color: {{ i.ink }};">{{ i.text }}</span>
                       </label>
                     </sc-for>
@@ -1982,7 +2009,7 @@
         </aside>
 
         <div class="ai-main" style="display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--c-surface); border: 1px solid var(--c-hair); border-radius: var(--c-radius-in); box-shadow: var(--sh-amb); overflow: hidden;">
-          <div data-aithread="1" style="flex: 1; min-height: 0; overflow-y: auto; padding: 22px 20px 16px; display: flex; flex-direction: column; gap: 12px;">
+          <div data-aithread="1" data-fb-scroll="bottom" style="flex: 1; min-height: 0; overflow-y: auto; padding: 22px 20px 16px; display: flex; flex-direction: column; gap: 12px;">
             <sc-if value="{{ aiEmpty }}" hint-placeholder-val="{{ true }}">
               <div style="margin: auto; width: 100%; max-width: 560px; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 24px 0;">
                 <span class="eyebrow ai-greet" style="color: var(--c-accent-lift); margin-bottom: -12px;">{{ aiGreet }}</span>
@@ -2109,7 +2136,7 @@
               <sc-for list="{{ aiItems }}" as="it" hint-placeholder-count="0">
                 <div class="ai-item" style="border: 1px solid {{ it.border }}; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; opacity: {{ it.opacity }};">
                   <div style="display: flex; gap: 10px; align-items: flex-start;">
-                    <input type="checkbox" checked="{{ it.checked }}" disabled="{{ it.disabled }}" onChange="{{ it.toggle }}" aria-label="Übernehmen" style="flex: none; margin-top: 3px; accent-color: var(--c-accent); width: 16px; height: 16px;">
+                    <input type="checkbox" class="g-check" checked="{{ it.checked }}" disabled="{{ it.disabled }}" onChange="{{ it.toggle }}" aria-label="Übernehmen" style="flex: none; margin-top: 3px;">
                     <button onClick="{{ it.toggleEdit }}" disabled="{{ it.disabled }}" aria-expanded="{{ it.editing }}" style="flex: 1; min-width: 0; border: none; background: transparent; padding: 0; text-align: left; color: var(--c-ink); cursor: pointer; display: flex; flex-direction: column; gap: 2px; border-radius: 6px;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
                       <span class="eyebrow om-eyebrow-accent">{{ it.kind }}</span>
                       <span style="font-size: var(--t-sm); font-weight: 500; line-height: 1.4; text-wrap: pretty; overflow-wrap: anywhere;">{{ it.sumText }}</span>
@@ -2275,7 +2302,7 @@
               </div>
             </sc-if>
           </div>
-          <div data-libthread="1" style="flex: 1; min-height: 220px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+          <div data-libthread="1" data-fb-scroll="bottom" style="flex: 1; min-height: 220px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
             <sc-if value="{{ libChatEmpty }}" hint-placeholder-val="{{ true }}">
               <div style="margin: auto 0; display: flex; flex-direction: column; gap: 10px;">
                 <span style="font-size: var(--t-sm); color: var(--c-soft); line-height: 1.5; text-wrap: pretty;">Antworten stützen sich zuerst auf deine Bücher, mit Titel und Seite. Was die AI aus eigenem Wissen ergänzt, ist markiert. Deutsch oder Englisch.</span>
@@ -2331,7 +2358,7 @@
                       <span class="eyebrow om-eyebrow-accent">Vorschlag</span>
                       <sc-for list="{{ m.items }}" as="it" hint-placeholder-count="0">
                         <div style="display: flex; gap: 10px; align-items: flex-start;">
-                          <input type="checkbox" checked="{{ it.checked }}" onChange="{{ it.toggle }}" aria-label="Übernehmen" style="flex: none; margin-top: 3px; accent-color: var(--c-accent); width: 16px; height: 16px;">
+                          <input type="checkbox" class="g-check" checked="{{ it.checked }}" onChange="{{ it.toggle }}" aria-label="Übernehmen" style="flex: none; margin-top: 3px;">
                           <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px;">
                             <span style="font-size: .8em; font-weight: 700; color: var(--c-soft);">{{ it.kind }}</span>
                             <sc-if value="{{ it.isGuide }}" hint-placeholder-val="{{ false }}">
@@ -2451,7 +2478,7 @@
                       <span class="eyebrow">Checkliste</span>
                       <sc-for list="{{ c.steps }}" as="st" hint-placeholder-count="0">
                         <div style="display: flex; align-items: center; gap: 9px; font-size: .86em;">
-                          <input type="checkbox" checked="{{ st.done }}" onChange="{{ st.toggle }}" aria-label="{{ st.text }}" style="flex: none; accent-color: var(--c-accent); width: 16px; height: 16px;">
+                          <input type="checkbox" class="g-check" checked="{{ st.done }}" onChange="{{ st.toggle }}" aria-label="{{ st.text }}" style="flex: none;">
                           <span style="flex: 1; min-width: 0; color: var(--c-ink);">{{ st.text }}</span>
                           <button onClick="{{ st.remove }}" aria-label="Schritt entfernen" style="flex: none; border: none; background: transparent; color: var(--c-faint); width: 26px; height: 26px; border-radius: 999px; font-size: 15px; line-height: 1;" style-hover="color: var(--c-ink); background: var(--c-panel);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">×</button>
                         </div>
@@ -2459,7 +2486,7 @@
                       <input value="{{ c.stepDraft }}" onChange="{{ c.setStepDraft }}" onKeyDown="{{ c.stepKey }}" onBlur="{{ c.addStep }}" aria-label="Neuer Schritt" placeholder="+ Schritt, Enter" style="width: 100%; box-sizing: border-box; border: 1px dashed var(--c-hair); border-radius: 11px; background: transparent; color: var(--c-ink); padding: 7px 11px; font-size: .84em;" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
                     </div>
                     <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                      <input type="checkbox" checked="{{ c.photo }}" onChange="{{ c.togglePhoto }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                      <input type="checkbox" class="g-switch" checked="{{ c.photo }}" onChange="{{ c.togglePhoto }}" style="height: 16px;">
                       <span>Foto als Nachweis</span>
                     </label>
                     <sc-if value="{{ c.photo }}" hint-placeholder-val="{{ false }}">
@@ -2800,7 +2827,7 @@
                   <p style="margin: 0; font-size: .86em; color: var(--c-soft);">Noch keine Störung erfasst.</p>
                 </sc-if>
                 <sc-if value="{{ m.mfHasList }}" hint-placeholder-val="{{ false }}">
-                  <div style="max-height: 360px; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; margin: 0 -4px; padding: 0 4px; scrollbar-width: thin;">
+                  <div data-fb-scroll="top" style="max-height: 360px; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; margin: 0 -4px; padding: 0 4px; scrollbar-width: thin;">
                     <sc-for list="{{ m.mfList }}" as="f" hint-placeholder-count="2">
                       <div class="{{ f.riseClass }}" style="display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px;">
                         <div style="position: relative; display: flex; justify-content: center;">
@@ -2851,7 +2878,7 @@
                 </div>
               </div>
               <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                <input type="checkbox" checked="{{ m.hasImage }}" onChange="{{ m.toggleImage }}" style="accent-color: var(--c-accent); width: 16px; height: 16px;">
+                <input type="checkbox" class="g-switch" checked="{{ m.hasImage }}" onChange="{{ m.toggleImage }}" style="height: 16px;">
                 <span>Bild auf der Karte</span>
               </label>
               <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap; padding-top: 2px;">
@@ -3115,7 +3142,7 @@
                       </select>
                     </div>
                     <label style="display: flex; align-items: center; gap: 8px; font-size: .84em; color: var(--c-soft); cursor: pointer;">
-                      <input type="checkbox" checked="{{ c.hasImage }}" onChange="{{ c.toggleImage }}" style="accent-color: var(--c-accent); width: 16px; height: 16px; margin: 0;">
+                      <input type="checkbox" class="g-switch" checked="{{ c.hasImage }}" onChange="{{ c.toggleImage }}" style="height: 16px; margin: 0;">
                       <span>Bild auf der Karte</span>
                     </label>
                     <sc-for list="{{ c.tagSections }}" as="ts" hint-placeholder-count="3">
@@ -3162,7 +3189,7 @@
                       <span class="eyebrow">Schritte</span>
                       <sc-for list="{{ c.steps }}" as="st" hint-placeholder-count="0">
                         <div class="om-gerow" style="display: flex; gap: 8px; align-items: center; font-size: .84em; padding: 2px 4px; margin: 0 -4px; border-radius: 7px;">
-                          <input type="checkbox" checked="{{ st.done }}" onChange="{{ st.toggle }}" aria-label="erledigt" style="accent-color: var(--c-accent); width: 14px; height: 14px; margin: 0;">
+                          <input type="checkbox" class="g-check g-sm" checked="{{ st.done }}" onChange="{{ st.toggle }}" aria-label="erledigt" style="height: 14px; margin: 0;">
                           <span class="om-strike" data-on="{{ st.strikeOn }}" style="flex: 1; min-width: 0; color: {{ st.ink }};">{{ st.text }}</span>
                           <button class="om-gedel" onClick="{{ st.remove }}" aria-label="Schritt entfernen" style="border: none; background: transparent; width: 30px; height: 30px; padding: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; width: 22px; height: 22px; color: var(--c-faint);" style-hover="color: var(--c-ink);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
                         </div>
@@ -3374,7 +3401,7 @@
                   </div>
                 </div>
                 <label style="display: flex; align-items: center; gap: 9px; font-size: var(--t-sm); cursor: pointer;">
-                  <input type="checkbox" checked="{{ genUseData }}" onChange="{{ genToggleData }}" style="accent-color: var(--c-accent); width: 16px; height: 16px; margin: 0;">
+                  <input type="checkbox" class="g-switch" checked="{{ genUseData }}" onChange="{{ genToggleData }}" style="height: 16px; margin: 0;">
                   <span>Aufgaben, Projekte, Team und Maschinen einbeziehen</span>
                 </label>
                 <sc-if value="{{ genHasError }}" hint-placeholder-val="{{ false }}">
@@ -3400,7 +3427,7 @@
                 <sc-for list="{{ genDraft }}" as="d" hint-placeholder-count="0">
                   <div style="border: 1px solid {{ d.border }}; border-radius: 12px; padding: 13px 14px; display: flex; flex-direction: column; gap: 9px; opacity: {{ d.opacity }}; transition: opacity .2s var(--e-soft), border-color .2s var(--e-soft);">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                      <input type="checkbox" checked="{{ d.on }}" onChange="{{ d.toggle }}" disabled="{{ d.empty }}" aria-label="Abschnitt übernehmen" style="flex: none; accent-color: var(--c-accent); width: 16px; height: 16px; margin: 0;">
+                      <input type="checkbox" class="g-check" checked="{{ d.on }}" onChange="{{ d.toggle }}" disabled="{{ d.empty }}" aria-label="Abschnitt übernehmen" style="flex: none; margin: 0;">
                       <strong style="flex: 1; min-width: 0; font-family: var(--c-font-head); font-weight: var(--c-hw); font-size: var(--t-md);">{{ d.title }}</strong>
                       <span class="eyebrow" style="flex: none;">{{ d.styleLabel }}</span>
                       <button class="om-press" onClick="{{ d.regen }}" disabled="{{ d.busy }}" title="Diesen Abschnitt neu entwerfen" style="flex: none; border: 1px solid var(--c-hair); background: transparent; color: var(--c-soft); border-radius: 999px; padding: 5px 11px; font-size: var(--t-sm); font-weight: 600; cursor: pointer;" style-hover="color: var(--c-ink); border-color: var(--c-accent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;">{{ d.regenLabel }}</button>
@@ -3574,7 +3601,17 @@
                   <span style="font-size: .78em; color: var(--c-soft);">kostenlos · Standard</span>
                 </div>
                 <div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 8px;">
-                  <input type="password" defaultValue="{{ aiGeminiKey }}" onBlur="{{ setAiGeminiKey }}" placeholder="Gemini API-Key" aria-label="Gemini API-Key" autoComplete="off" spellCheck="false" style="width: 100%; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
+                  <div style="display: flex; gap: 6px; min-width: 0;">
+                    <input type="{{ aiGeminiKeyType }}" data-keyfield="gemini" defaultValue="{{ aiGeminiKey }}" onBlur="{{ setAiGeminiKey }}" placeholder="Gemini API-Key" aria-label="Gemini API-Key" autoComplete="off" spellCheck="false" style="flex: 1; width: auto; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
+                    <button type="button" onClick="{{ toggleAiGeminiKey }}" aria-label="{{ aiGeminiKeyEyeLabel }}" title="{{ aiGeminiKeyEyeLabel }}" aria-pressed="{{ aiGeminiKeyShown }}" style="flex: none; width: 38px; border: none; border-radius: 12px; background: color-mix(in srgb, var(--c-accent) 14%, transparent); color: var(--c-accent-lift); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);" style-hover="background: color-mix(in srgb, var(--c-accent) 24%, transparent);" style-active="transform: scale(.92);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
+                      <sc-if value="{{ aiGeminiKeyHidden }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+                      <sc-if value="{{ aiGeminiKeyShown }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"></path><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6"></path><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path></svg></sc-if>
+                    </button>
+                    <button type="button" onClick="{{ copyAiGeminiKey }}" aria-label="Gemini-Key kopieren" title="Kopieren" style="flex: none; width: 38px; border: none; border-radius: 12px; background: color-mix(in srgb, var(--c-accent) 14%, transparent); color: var(--c-accent-lift); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);" style-hover="background: color-mix(in srgb, var(--c-accent) 24%, transparent);" style-active="transform: scale(.92);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
+                      <sc-if value="{{ aiGeminiKeyCopied }}" hint-placeholder-val="{{ false }}"><svg class="om-rise" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+                      <sc-if value="{{ aiGeminiKeyNotCopied }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h8"></path></svg></sc-if>
+                    </button>
+                  </div>
                   <div style="display: flex; gap: 6px; min-width: 0;">
                     <sc-if value="{{ aiGeminiHasList }}" hint-placeholder-val="{{ false }}">
                       <select value="{{ aiGeminiModel }}" onChange="{{ pickAiGeminiModel }}" aria-label="Gemini Modell" style="width: 100%; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0; font-size: .82em; appearance: none; -webkit-appearance: none; padding-right: 28px; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--c-soft) 50%), linear-gradient(135deg, var(--c-soft) 50%, transparent 50%); background-position: calc(100% - 15px) 55%, calc(100% - 10px) 55%; background-size: 5px 5px; background-repeat: no-repeat;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
@@ -3601,7 +3638,17 @@
                   <span style="font-size: .78em; color: var(--c-soft);">kostenpflichtig · beste Qualität</span>
                 </div>
                 <div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 8px;">
-                  <input type="password" defaultValue="{{ aiClaudeKey }}" onBlur="{{ setAiClaudeKey }}" placeholder="sk-ant-…" aria-label="Claude API-Key" autoComplete="off" spellCheck="false" style="width: 100%; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
+                  <div style="display: flex; gap: 6px; min-width: 0;">
+                    <input type="{{ aiClaudeKeyType }}" data-keyfield="claude" defaultValue="{{ aiClaudeKey }}" onBlur="{{ setAiClaudeKey }}" placeholder="sk-ant-…" aria-label="Claude API-Key" autoComplete="off" spellCheck="false" style="flex: 1; width: auto; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
+                    <button type="button" onClick="{{ toggleAiClaudeKey }}" aria-label="{{ aiClaudeKeyEyeLabel }}" title="{{ aiClaudeKeyEyeLabel }}" aria-pressed="{{ aiClaudeKeyShown }}" style="flex: none; width: 38px; border: none; border-radius: 12px; background: color-mix(in srgb, var(--c-accent) 14%, transparent); color: var(--c-accent-lift); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);" style-hover="background: color-mix(in srgb, var(--c-accent) 24%, transparent);" style-active="transform: scale(.92);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
+                      <sc-if value="{{ aiClaudeKeyHidden }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+                      <sc-if value="{{ aiClaudeKeyShown }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"></path><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6"></path><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path></svg></sc-if>
+                    </button>
+                    <button type="button" onClick="{{ copyAiClaudeKey }}" aria-label="Claude-Key kopieren" title="Kopieren" style="flex: none; width: 38px; border: none; border-radius: 12px; background: color-mix(in srgb, var(--c-accent) 14%, transparent); color: var(--c-accent-lift); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);" style-hover="background: color-mix(in srgb, var(--c-accent) 24%, transparent);" style-active="transform: scale(.92);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
+                      <sc-if value="{{ aiClaudeKeyCopied }}" hint-placeholder-val="{{ false }}"><svg class="om-rise" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+                      <sc-if value="{{ aiClaudeKeyNotCopied }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h8"></path></svg></sc-if>
+                    </button>
+                  </div>
                   <input defaultValue="{{ aiClaudeModel }}" onBlur="{{ setAiClaudeModel }}" aria-label="Claude Modell" spellCheck="false" autoCapitalize="off" style="width: 100%; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0; font-size: .82em;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
                 </div>
                 <span style="font-size: .78em; color: var(--c-faint);">Key unter console.anthropic.com → API Keys. Dort auch ein monatliches Limit setzen.</span>
@@ -3613,7 +3660,17 @@
                   <span style="font-size: .78em; color: var(--c-soft);">kostenlos · schnell, kurze Fragen</span>
                 </div>
                 <div style="display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 8px;">
-                  <input type="password" defaultValue="{{ aiGroqKey }}" onBlur="{{ setAiGroqKey }}" placeholder="gsk_…" aria-label="Groq API-Key" autoComplete="off" spellCheck="false" style="width: 100%; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
+                  <div style="display: flex; gap: 6px; min-width: 0;">
+                    <input type="{{ aiGroqKeyType }}" data-keyfield="groq" defaultValue="{{ aiGroqKey }}" onBlur="{{ setAiGroqKey }}" placeholder="gsk_…" aria-label="Groq API-Key" autoComplete="off" spellCheck="false" style="flex: 1; width: auto; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
+                    <button type="button" onClick="{{ toggleAiGroqKey }}" aria-label="{{ aiGroqKeyEyeLabel }}" title="{{ aiGroqKeyEyeLabel }}" aria-pressed="{{ aiGroqKeyShown }}" style="flex: none; width: 38px; border: none; border-radius: 12px; background: color-mix(in srgb, var(--c-accent) 14%, transparent); color: var(--c-accent-lift); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);" style-hover="background: color-mix(in srgb, var(--c-accent) 24%, transparent);" style-active="transform: scale(.92);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
+                      <sc-if value="{{ aiGroqKeyHidden }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+                      <sc-if value="{{ aiGroqKeyShown }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"></path><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.8 9.8 0 0 0 5.4-1.6"></path><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"></path></svg></sc-if>
+                    </button>
+                    <button type="button" onClick="{{ copyAiGroqKey }}" aria-label="Groq-Key kopieren" title="Kopieren" style="flex: none; width: 38px; border: none; border-radius: 12px; background: color-mix(in srgb, var(--c-accent) 14%, transparent); color: var(--c-accent-lift); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .2s cubic-bezier(.22,1,.36,1);" style-hover="background: color-mix(in srgb, var(--c-accent) 24%, transparent);" style-active="transform: scale(.92);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 2px;">
+                      <sc-if value="{{ aiGroqKeyCopied }}" hint-placeholder-val="{{ false }}"><svg class="om-rise" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></sc-if>
+                      <sc-if value="{{ aiGroqKeyNotCopied }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h8"></path></svg></sc-if>
+                    </button>
+                  </div>
                   <div style="display: flex; gap: 6px; min-width: 0;">
                     <sc-if value="{{ aiGroqHasList }}" hint-placeholder-val="{{ false }}">
                       <select value="{{ aiGroqModel }}" onChange="{{ pickAiGroqModel }}" aria-label="Groq Modell" style="width: 100%; box-sizing: border-box; border: none; border-radius: 12px; background: var(--c-input); color: var(--c-ink); font-family: inherit; padding: 11px 14px; font-size: .9em; transition: box-shadow .2s; min-width: 0; font-size: .82em; appearance: none; -webkit-appearance: none; padding-right: 28px; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--c-soft) 50%), linear-gradient(135deg, var(--c-soft) 50%, transparent 50%); background-position: calc(100% - 15px) 55%, calc(100% - 10px) 55%; background-size: 5px 5px; background-repeat: no-repeat;" style-focus="outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-accent) 55%, transparent);">
@@ -4160,7 +4217,7 @@ const CARD_STYLES = { standard: ['Standard'], mag: ['Magazin'], pop: ['Pop'], gl
 /* in-app help. HELP_VER goes up by one with every release that adds features;
    entries tagged with that version show as "Neu" until the help sheet has been opened.
    tab keys match state.tab; "all" lists changes across the app. */
-const HELP_VER = 17;
+const HELP_VER = 18;
 const HELP = {
   today: [
     [8, 'Im Blick', 'Oben auf Heute: erledigte Aufgaben der Woche, überfällige Reinigungen, Störungen der letzten 4 Wochen und offene Delegationen. Antippen springt in den Bereich.'],
@@ -4180,6 +4237,7 @@ const HELP = {
     [8, 'Delegiert', 'Aufgabe, Person, Stufe der Delegationsleiter und Check-in-Datum. «Stufe höher» gibt mehr Verantwortung ab, fällige Check-ins stehen auf Heute.']
   ],
   settings: [
+    [18, 'Nach oben', 'Auf langen Seiten erscheint unten in der Mitte ein runder Knopf mit Fortschrittsring: er zeigt, wie weit du gescrollt hast, und bringt dich mit einem Tipp nach oben. Im AI-Chat führt er zurück zur neuesten Nachricht.'],
     [16, 'Offline', 'Ohne Internet erscheint unten «Offline». Die installierte App startet trotzdem, deine Änderungen bleiben gespeichert und werden synchronisiert, sobald du wieder online bist.'],
     [15, 'Modelle wählen', 'Unter AI-Anbieter lädt der Pfeil-Knopf neben Gemini und Groq die Modelle, die dein Key nutzen kann. Danach wählst du sie aus einer Liste; sie wird auch beim Eintragen eines neuen Keys geladen.'],
     [14, 'AI-Anbieter', 'Unter Appearance → AI-Anbieter einen Gemini-Key (gratis), Claude-Key oder Groq-Key eintragen. So läuft die AI auch in der installierten App. «Verbindung testen» prüft den Key.'],
@@ -4444,7 +4502,7 @@ class Component extends DCLogic {
        fresh-install seed is written straight into tasks, not a separate list */
     tasks: WEEKLY.map(([id, day, text, note]) => ({ id, text, note, day, week: '', routine: true, done: false, tags: [], icon: '', lucide: 'file-text', due: '', repeat: 'none', project: '' })),
     guide: guideSeed(), guideEditSec: null, guideCardOpen: null, gStepDraft: {}, guideHandover: false, gcAdd: false, gcDraft: '', gcRename: null, gcFresh: null, guideView: 'board', guideOpen: {}, projColsX: [], pcAdd: false, pcDraft: '', pcRename: null, pcFresh: null, gen: null, genFields: {},
-    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, libGenWhy: {}, netOffline: false, netBack: false, appErr: null, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
+    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, keyShow: {}, keyCopied: '', libGenWhy: {}, netOffline: false, netBack: false, appErr: null, dayPop: null, dayFlick: {}, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
     projects: [], notes: [], members: [], tags: DEFAULT_TAGS.slice(), highlightNote: null, cleanings: [], clCols: [], clOpen: null, clConfirm: null, clOver: null, clStepDraft: {}, clFilterM: '', clFilterP: '', highlightClean: null, aiChats: [], aiActive: null, aiDraft: '', aiBusy: false, aiError: null, aiPanel: null, aiEdit: null, aiMenu: null, aiRenaming: null, aiNotePick: false,
     machines: MACHINES.map((name, i) => ({ id: 'm' + i, name, faults: '', cleaning: '', note: '', image: false })),
     weekly: [], extraDays: [], newColOpen: false, newColDraft: '',
@@ -4637,6 +4695,10 @@ class Component extends DCLogic {
       if (st.mfOpen && Object.keys(st.mfOpen).some(k => st.mfOpen[k]) && !t.closest('[data-mf-row]')) this.setState({ mfOpen: {} });
     };
     document.addEventListener('pointerdown', this._mfOutside, true);
+    this._dayPopOut = (e) => { if (this.state.dayPop && !(e.target.closest && e.target.closest('[data-daypop-root]'))) this.setState({ dayPop: null }); };
+    this._dayPopKey = (e) => { if (e.key === 'Escape' && this.state.dayPop) this.setState({ dayPop: null }); };
+    document.addEventListener('pointerdown', this._dayPopOut, true);
+    document.addEventListener('keydown', this._dayPopKey);
     /* the installed copy (own address, top-level) registers the offline cache; the
        preview here never does */
     try { if ('serviceWorker' in navigator && window.top === window && location.protocol === 'https:' && !/claudeusercontent|claude\.ai|localhost/.test(location.hostname)) navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
@@ -4653,7 +4715,9 @@ class Component extends DCLogic {
       this._dvFocus = () => { if (Date.now() - (this._dvLastFocus || 0) > 30000) { this._dvLastFocus = Date.now(); this.dvSync(); } };
       window.addEventListener('online', this._dvOnline);
       window.addEventListener('focus', this._dvFocus);
-      this._dvOffline = () => { this.setState({ netOffline: true, netBack: false }); this.dvStatus('off', 'Offline · Änderungen werden lokal gespeichert.'); };
+      this._dvOffline = () => { this.setState({ netOffline: true, netBack: false }); this.dvStatus('off', 'Änderungen werden lokal gespeichert.'); };
+      this._imgDirty = () => this.dvMark();
+      window.addEventListener('imgslots-dirty', this._imgDirty);
       window.addEventListener('offline', this._dvOffline);
       this._appErr = (ev) => { const r = ev.reason || ev.error || ev.message; const t = String((r && (r.stack || r.message)) || r || ''); if (!t || /ResizeObserver/.test(t)) return; this.setState({ appErr: 'Fehler: ' + t.split('\n').slice(0, 2).join(' · ') }); };
       window.addEventListener('unhandledrejection', this._appErr);
@@ -5029,6 +5093,48 @@ class Component extends DCLogic {
         };
       })
     };
+  }
+
+  /* segmented day picker options (pill control): active = accent fill */
+  /* day picker: a round + button that turns on hover; tapping it drops the days out
+     below it one after another, like a speed-dial */
+  dayPop(key, cur, pick, opt) {
+    const open = this.state.dayPop === key, rm = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = this.daySeg(cur, (id) => {
+      const stamp = Date.now();
+      this.setState(st => ({ dayPop: null, dayFlick: Object.assign({}, st.dayFlick, { [key]: stamp }) }));
+      clearTimeout((this._dayFlickT = this._dayFlickT || {})[key]);
+      this._dayFlickT[key] = setTimeout(() => this.setState(st => { const n = Object.assign({}, st.dayFlick); delete n[key]; return { dayFlick: n }; }), 4000);
+      pick(id);
+    }, opt);
+    const fl = (this.state.dayFlick || {})[key];
+    const n = items.length;
+    const chosen = items.find(x => x.on === 'true');
+    return {
+      flicker: fl ? 'text-flicker-in-glow' : '', flickKey: 'f' + (fl || 0),
+      z: open ? 60 : 1, expanded: open ? 'true' : 'false', pe: open ? 'auto' : 'none',
+      label: chosen ? chosen.full : 'Tag', aria: 'Tag wählen, aktuell ' + (chosen ? chosen.full : 'keiner'),
+      rot: open ? 'rotate(45deg)' : 'rotate(0deg)', rotHover: open ? 'rotate(45deg) scale(1.06)' : 'rotate(90deg) scale(1.06)', rotActive: open ? 'rotate(45deg) scale(.93)' : 'rotate(90deg) scale(.93)',
+      toggle: (e) => { if (e) e.stopPropagation(); this.setState({ dayPop: open ? null : key }); },
+      items: items.map((it, i) => Object.assign(it, {
+        tab: open ? 0 : -1,
+        op: open ? 1 : 0,
+        tf: open ? 'translateY(0) scale(1)' : 'translateY(-16px) scale(.4)',
+        delay: rm ? '0ms' : (open ? i * 50 : (n - 1 - i) * 30) + 'ms'
+      }))
+    };
+  }
+
+  daySeg(cur, pick, opt) {
+    const abbr = { mon: 'Mo', tue: 'Di', wed: 'Mi', thu: 'Do', fri: 'Fr' };
+    const list = (opt && opt.inbox ? [['', 'Inbox']] : []).concat(DAYS, (this.state.extraDays || []).map(d => [d.id, d.label]));
+    return list.map(([id, label]) => {
+      const on = (cur || '') === id;
+      return { id, full: label, label: opt && opt.short ? (abbr[id] || label) : label, on: on ? 'true' : 'false',
+        bg: on ? 'var(--c-accent)' : 'var(--c-surface)', fg: on ? 'var(--c-on-accent)' : 'var(--c-ink)',
+        hoverBg: 'var(--c-accent)', hoverFg: 'var(--c-on-accent)',
+        pick: () => pick(id) };
+    });
   }
 
   saveMach(id, patch) {
@@ -7516,6 +7622,23 @@ class Component extends DCLogic {
       aiGeminiKey: c.geminiKey || '', setAiGeminiKey: set('geminiKey'), aiGeminiModel: c.geminiModel, setAiGeminiModel: set('geminiModel'),
       aiClaudeKey: c.claudeKey || '', setAiClaudeKey: set('claudeKey'), aiClaudeModel: c.claudeModel, setAiClaudeModel: set('claudeModel'),
       aiGroqKey: c.groqKey || '', setAiGroqKey: set('groqKey'), aiGroqModel: c.groqModel, setAiGroqModel: set('groqModel'),
+      ...['Gemini', 'Claude', 'Groq'].reduce((o, P) => {
+        const p = P.toLowerCase(), shown = !!(this.state.keyShow || {})[p], copied = (this.state.keyCopied || '') === p;
+        o['ai' + P + 'KeyType'] = shown ? 'text' : 'password';
+        o['ai' + P + 'KeyShown'] = shown; o['ai' + P + 'KeyHidden'] = !shown;
+        o['ai' + P + 'KeyEyeLabel'] = shown ? 'Key verbergen' : 'Key anzeigen';
+        o['toggleAi' + P + 'Key'] = () => this.setState({ keyShow: Object.assign({}, this.state.keyShow, { [p]: !shown }) });
+        o['ai' + P + 'KeyCopied'] = copied; o['ai' + P + 'KeyNotCopied'] = !copied;
+        o['copyAi' + P + 'Key'] = async () => {
+          const el = document.querySelector('[data-keyfield="' + p + '"]');
+          const v = (el && el.value) || this.aiCfg()[p + 'Key'] || '';
+          if (!v) { if (el) el.focus(); return; }
+          try { await navigator.clipboard.writeText(v); }
+          catch (e) { if (el) { const t = el.type; el.type = 'text'; el.select(); document.execCommand('copy'); el.type = t; } }
+          this.setState({ keyCopied: p }); clearTimeout(this._keyCT); this._keyCT = setTimeout(() => this.setState({ keyCopied: '' }), 1600);
+        };
+        return o;
+      }, {}),
       ...['Gemini', 'Groq'].reduce((o, P) => {
         const p = P.toLowerCase(), cur = c[p + 'Model'], raw = c[p + 'Models'] || [];
         const list = raw.some(m => m.id === cur) || !cur ? raw : [{ id: cur, label: cur + ' · eigene Eingabe' }].concat(raw);
@@ -7873,9 +7996,9 @@ class Component extends DCLogic {
     return d;
   }
 
-  async dvApply(d, withSlots) {
+  async dvApply(d) {
     this._dvPulling = true;
-    const { patch } = await this.backupPatch(d, { slots: !!withSlots });
+    const { patch } = await this.backupPatch(d, { slots: true });
     this.save(patch, true);
     setTimeout(() => { this._dvPulling = false; }, 900);
   }
@@ -8039,7 +8162,7 @@ class Component extends DCLogic {
     try {
       await this.dvBackup('vor-wiederherstellung');
       const d = await this.sbGet('backups/' + f.name);
-      await this.dvApply(d, true);
+      await this.dvApply(d);
       this._dvBusy = false; await this.dvSync({ force: 'local' });
       this.dvListBackups().catch(() => {});
     } catch (e) { this.dvStatus('err', String(e && e.message || e)); }
@@ -8333,7 +8456,7 @@ class Component extends DCLogic {
         setNote: (e) => this.patchTask(t.id, { note: e.target.value }),
         setDue: (e) => this.patchTask(t.id, { due: e.target.value }),
         setRepeat: (e) => this.patchTask(t.id, { repeat: e.target.value }),
-        setDay: (e) => this.patchTask(t.id, { day: e.target.value }),
+        setDay: (e) => this.patchTask(t.id, { day: e.target.value }), dayPop: this.dayPop('ed' + t.id, t.day, (id) => this.patchTask(t.id, { day: id }), { inbox: true }),
         isRoutine: !!t.routine,
         toggleRoutine: () => this.patchTask(t.id, { routine: !t.routine }),
         isWichtig: !!t.wichtig,
@@ -8731,7 +8854,7 @@ class Component extends DCLogic {
       openNewCol: () => this.setState({ newColOpen: true, newColDraft: '' }),
       cancelNewCol: () => this.setState({ newColOpen: false, newColDraft: '' }),
       confirmNewCol: () => this.addColumn(),
-      addTask, draftText: s.draftText, draftDay: s.draftDay, draftProject: s.draftProject,
+      addTask, draftText: s.draftText, draftDay: s.draftDay, draftProject: s.draftProject, draftDayPop: this.dayPop('draft', s.draftDay, (id) => this.setState({ draftDay: id }), { inbox: true }),
       setDraftText: (e) => this.setState({ draftText: e.target.value }),
       setDraftDay: (e) => this.setState({ draftDay: e.target.value }),
       setDraftProject: (e) => this.setState({ draftProject: e.target.value }),
@@ -8774,7 +8897,7 @@ class Component extends DCLogic {
       ed: s.editCard ? card(s.tasks.find(t => t.id === s.editCard) || {}) : {},
       closeCard: () => this.closeEditor(),
       stopCard: (e) => e.stopPropagation(),
-      bdText: s.bdText, bdDay: s.bdDay, addBoardCard,
+      bdText: s.bdText, bdDay: s.bdDay, bdDayPop: this.dayPop('board', s.bdDay, (id) => this.setState({ bdDay: id })), addBoardCard,
       setBdText: (e) => this.setState({ bdText: e.target.value }),
       setBdDay: (e) => this.setState({ bdDay: e.target.value }),
       bdKey: (e) => { if (e.key === 'Enter') addBoardCard(); },

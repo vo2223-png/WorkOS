@@ -2,8 +2,8 @@
    arrive on the next online start), everything else cache-first with a background
    refresh. React, Lucide and the fonts come from CDNs, so they are precached too —
    without them the app cannot start offline. API calls always go to the network. */
-const CACHE = 'brain-v7';
-const LOCAL = ['./', 'index.html', 'support.js', 'image-slot.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'assets/spruengli.png', 'fonts/Gilroy-Light.otf', '_ds/organic-a0755eee-50a0-4980-8d1b-154cd88e8b42/styles.css', '_ds/organic-a0755eee-50a0-4980-8d1b-154cd88e8b42/_ds_bundle.js', '.image-slots.state.json'];
+const CACHE = 'brain-v17';
+const LOCAL = ['./', 'index.html', 'support.js', 'image-slot.js', 'slot-shim.js', 'scroll-top.js', 'gooey-controls.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'assets/spruengli.png', 'fonts/Gilroy-Light.otf', '_ds/organic-a0755eee-50a0-4980-8d1b-154cd88e8b42/styles.css', '_ds/organic-a0755eee-50a0-4980-8d1b-154cd88e8b42/_ds_bundle.js', '.image-slots.state.json'];
 const CDN = [
   'https://unpkg.com/react@18.3.1/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js',
