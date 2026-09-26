@@ -7475,7 +7475,7 @@ class Component extends DCLogic {
     } catch (e) { this.setState({ aiTestMsg: String(e && e.message || e), aiTestOk: false }); }
   }
 
-  aiVals() {
+  aiProviderVals() {
     const c = this.aiCfg(), here = !!(window.claude && window.claude.complete), act = this.aiPick(false);
     const u = this.state.aiUse || {};
     const usd = ((u.inTok || 0) / 1e6 * 3 + (u.outTok || 0) / 1e6 * 15);
@@ -9142,7 +9142,7 @@ class Component extends DCLogic {
       ],
       exportData: () => this.exportFile(),
       importData: (e) => this.importFile(e),
-      ...this.aiVals(),
+      ...this.aiProviderVals(),
       ...this.dvVals(),
       appErr: s.appErr || '', hasAppErr: !!s.appErr, appErrClose: () => this.setState({ appErr: null }),
       appErrCopy: () => { try { navigator.clipboard.writeText(this.state.appErr || ''); } catch (e) {} },
