@@ -987,7 +987,7 @@
                 <button onClick="{{ lbGen }}" disabled="{{ lbCantGen }}" style="display: flex; align-items: center; gap: 6px; border: none; background: transparent; color: var(--c-accent-lift); font-size: var(--t-sm); font-weight: 700; white-space: nowrap; flex: none; padding: 5px 8px; border-radius: 8px; opacity: {{ lbGenOpacity }}; cursor: pointer;" style-hover="background: color-mix(in srgb, var(--c-accent) 10%, transparent);" style-focus="outline: 2px solid var(--c-accent); outline-offset: 1px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><use href="#ic-spark"></use></svg><span>{{ lbGenLabel }}</span></button>
               </div>
               <textarea value="{{ lbSummary }}" onChange="{{ setLbSummary }}" onBlur="{{ lbPersist }}" rows="5" aria-label="Zusammenfassung" placeholder="Worum geht es? Selbst schreiben oder von der AI erstellen lassen." style="field-sizing: content; min-height: 110px; resize: vertical; border: 1px solid var(--c-hair); border-radius: 12px; background: var(--c-input); color: var(--c-ink); padding: 11px 13px; font-size: 1em; line-height: 1.55; font-family: inherit; outline: none;" style-focus="border-color: var(--c-accent);"></textarea>
-              <sc-if value="{{ lbGenErr }}" hint-placeholder-val="{{ false }}"><span style="font-size: var(--t-sm); color: var(--c-warn-ink);">Die AI hat nicht geantwortet. Nochmal versuchen.</span></sc-if>
+              <sc-if value="{{ lbGenErr }}" hint-placeholder-val="{{ false }}"><span style="display: flex; flex-direction: column; gap: 3px; font-size: var(--t-sm); color: var(--c-warn-ink);"><span>Die AI hat nicht geantwortet. Nochmal versuchen.</span><sc-if value="{{ lbGenHasWhy }}" hint-placeholder-val="{{ false }}"><span style="font-size: .92em; opacity: .85; overflow-wrap: anywhere;">{{ lbGenWhy }}</span></sc-if></span></sc-if>
             </div>
             <div style="display: flex; flex-direction: column; gap: 4px;">
               <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 4px;">
@@ -4160,7 +4160,7 @@ const CARD_STYLES = { standard: ['Standard'], mag: ['Magazin'], pop: ['Pop'], gl
 /* in-app help. HELP_VER goes up by one with every release that adds features;
    entries tagged with that version show as "Neu" until the help sheet has been opened.
    tab keys match state.tab; "all" lists changes across the app. */
-const HELP_VER = 16;
+const HELP_VER = 17;
 const HELP = {
   today: [
     [8, 'Im Blick', 'Oben auf Heute: erledigte Aufgaben der Woche, überfällige Reinigungen, Störungen der letzten 4 Wochen und offene Delegationen. Antippen springt in den Bereich.'],
@@ -4222,6 +4222,7 @@ const HELP = {
     [1, 'Quellen', 'Unter jeder Antwort stehen die Einträge, auf die sie sich stützt. Ein Klick springt dorthin.']
   ],
   library: [
+    [17, 'Bibliothek mit Gemini und Groq', 'Zusammenfassungen und Fragen an die Bibliothek laufen auch über Gemini oder Groq. Für Buchtexte nimmt die App Gemini, wenn ein Key da ist, weil Groq nur kurze Anfragen erlaubt; mit Groq allein werden weniger Auszüge gesendet.'],
     [8, 'Als Experiment', 'Der Kolben neben einer Kernidee macht sie zum Experiment der Woche auf Heute.'],
     [6, 'Titelbild', 'Jedes Buch zeigt die erste Seite des Dokuments als Titelbild. Bei EPUB wird das hinterlegte Cover verwendet, sonst die erste Seite.'],
     [4, 'Bücher hinzufügen', '«Hochladen» oder Dateien in die Bibliothek ziehen: PDF, EPUB, Word (DOCX), Markdown und Text. «Text einfügen» nimmt Artikel und Notizen auf. Der Text wird auf diesem Gerät gespeichert.'],
@@ -4443,7 +4444,7 @@ class Component extends DCLogic {
        fresh-install seed is written straight into tasks, not a separate list */
     tasks: WEEKLY.map(([id, day, text, note]) => ({ id, text, note, day, week: '', routine: true, done: false, tags: [], icon: '', lucide: 'file-text', due: '', repeat: 'none', project: '' })),
     guide: guideSeed(), guideEditSec: null, guideCardOpen: null, gStepDraft: {}, guideHandover: false, gcAdd: false, gcDraft: '', gcRename: null, gcFresh: null, guideView: 'board', guideOpen: {}, projColsX: [], pcAdd: false, pcDraft: '', pcRename: null, pcFresh: null, gen: null, genFields: {},
-    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, netOffline: false, netBack: false, appErr: null, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
+    faultLog: [], delegations: [], reviews: [], experiments: [], qc: null, flForm: null, flAll: false, drive: {}, dvKind: '', dvText: '', dvBackups: [], dvConflict: null, dvConfirm: null, ai: null, aiUse: null, aiTestMsg: '', aiTestOk: null, sbUrl: null, sbKey: null, sbEmail: null, sbPass: '', sbReset: null, sbCode: '', sbNewPass: '', sbPwOpen: false, dvReload: false, aiModelMsg: {}, aiModelBusy: {}, libGenWhy: {}, netOffline: false, netBack: false, appErr: null, mfForm: null, mfQ: '', mfOpen: {}, tmOpen: null, tmDraft: {}, tmFilter: {}, dg: null, revOpen: false, revDraft: null,
     projects: [], notes: [], members: [], tags: DEFAULT_TAGS.slice(), highlightNote: null, cleanings: [], clCols: [], clOpen: null, clConfirm: null, clOver: null, clStepDraft: {}, clFilterM: '', clFilterP: '', highlightClean: null, aiChats: [], aiActive: null, aiDraft: '', aiBusy: false, aiError: null, aiPanel: null, aiEdit: null, aiMenu: null, aiRenaming: null, aiNotePick: false,
     machines: MACHINES.map((name, i) => ({ id: 'm' + i, name, faults: '', cleaning: '', note: '', image: false })),
     weekly: [], extraDays: [], newColOpen: false, newColDraft: '',
@@ -5611,7 +5612,7 @@ class Component extends DCLogic {
     this.setState({ aiPhase: onL.length ? 'Liest ' + (onL.length > 3 ? onL.slice(0, 3).join(', ') + ' …' : onL.join(', ') + ' …') : 'Denkt nach …' });
     clearTimeout(this._aiPhaseT); this._aiPhaseT = setTimeout(() => { if (token === this._aiToken && this.state.aiBusy) this.setState({ aiPhase: 'Formuliert die Antwort …' }); }, 2600);
     const sys = this.aiSystem(ctx) + (know ? '\n' + know : '');
-    const body = { model: 'claude-sonnet-4-5', max_tokens: 3000, system: sys, messages: history, tools: [tool], tool_choice: { type: 'tool', name: 'respond' } };
+    const body = { __heavy: lib || !!know, model: 'claude-sonnet-4-5', max_tokens: 3000, system: sys, messages: history, tools: [tool], tool_choice: { type: 'tool', name: 'respond' } };
     let raw;
     try {
       try { raw = await this.llm(body); }
@@ -6244,16 +6245,23 @@ class Component extends DCLogic {
     this.setState(s => ({ libGen: Object.assign({}, s.libGen, { [id]: 'busy' }) }));
     const pages = (await this.libText(id)) || [];
     const total = pages.reduce((n, p) => n + p.t.length, 0);
-    const BUD = 80000;
+    const BUD = Math.min(this.llmBudget(true) - 3000, 200000);
     let parts = pages;
-    if (total > BUD) { const k = Math.max(8, Math.floor(BUD / 1800)); const step = pages.length / k; parts = []; for (let i = 0; i < k; i++) { const p = pages[Math.floor(i * step)]; if (p) parts.push({ l: p.l, t: p.t.slice(0, 1800) }); } }
+    if (total > BUD) { const per = BUD < 20000 ? 900 : 1800; const k = Math.max(6, Math.floor(BUD / per)); const step = pages.length / k; parts = []; for (let i = 0; i < k; i++) { const p = pages[Math.floor(i * step)]; if (p) parts.push({ l: p.l, t: p.t.slice(0, per) }); } }
     let captured = null;
     const tool = { name: 'summarize', description: 'Zusammenfassung und Kernideen des Dokuments.', input_schema: { type: 'object', required: ['summary', 'ideas'], properties: { summary: { type: 'string' }, ideas: { type: 'array', items: { type: 'string' } }, title: { type: 'string' }, author: { type: 'string' } } }, run: async (input) => { captured = input; return 'ok'; } };
     const sys = ['Du fasst Bücher und Dokumente für eine Führungskraft in der Produktion zusammen.', 'Schreibe auf Deutsch in Schweizer Schreibweise (ss statt ß), auch wenn das Dokument englisch ist.', 'summary: 5 bis 8 Sätze, sachlich, worum es geht und was die Hauptaussage ist.', 'ideas: 5 bis 10 Kernideen oder Prinzipien als kurze, eigenständige Sätze, jeweils mit der Seitenangabe aus den Auszügen in Klammern, z. B. (S. 12) oder (Kap. 3).', 'title und author nur, wenn sie im Text klar erkennbar sind.', 'Erfinde nichts, was nicht in den Auszügen steht.'].join('\n');
     const body = { __heavy: true, model: 'claude-sonnet-4-5', max_tokens: 2000, system: sys, messages: [{ role: 'user', content: 'Titel: ' + b0.title + (b0.author ? '\nAutor: ' + b0.author : '') + '\n\n' + parts.map(p => '[' + p.l + ']\n' + p.t).join('\n\n') }], tools: [tool], tool_choice: { type: 'tool', name: 'summarize' } };
-    try { try { await this.llm(body); } catch (e) { const b2 = Object.assign({}, body); delete b2.model; captured = null; await this.llm(b2); } } catch (e) { captured = null; }
+    let why = '';
+    try { try { await this.llm(body); } catch (e) {
+      /* too large for the provider's per-request limit: once more with half the excerpts */
+      const big = /413|too large|tokens per minute|TPM|rate_limit|context|reduce/i.test(String(e && e.message));
+      const b2 = Object.assign({}, body); delete b2.model; captured = null;
+      if (big && parts.length > 4) { const half = parts.filter((_, i) => i % 2 === 0); b2.messages = [{ role: 'user', content: 'Titel: ' + b0.title + (b0.author ? '\nAutor: ' + b0.author : '') + '\n\n' + half.map(p => '[' + p.l + ']\n' + p.t).join('\n\n') }]; }
+      await this.llm(b2);
+    } } catch (e) { captured = null; why = String(e && e.message || e); }
     const ok = !!(captured && typeof captured === 'object');
-    this.setState(s => ({ libGen: Object.assign({}, s.libGen, { [id]: ok ? null : 'err' }) }));
+    this.setState(s => ({ libGen: Object.assign({}, s.libGen, { [id]: ok ? null : 'err' }), libGenWhy: Object.assign({}, s.libGenWhy, { [id]: ok ? '' : why }) }));
     const cur = this.libBook(id);
     if (!ok || !cur) return;
     const patch = {};
@@ -6296,9 +6304,10 @@ class Component extends DCLogic {
       hits.sort((a, c) => c.sc - a.sc);
     }
     const per = {}, picked = [];
-    hits.forEach(h => { if (picked.length >= 12) return; per[h.b.id] = (per[h.b.id] || 0) + 1; if (per[h.b.id] <= 5) picked.push(h); });
+    const small = this.llmBudget(true) < 20000, maxN = small ? 5 : 12, maxPer = small ? 3 : 5;
+    hits.forEach(h => { if (picked.length >= maxN) return; per[h.b.id] = (per[h.b.id] || 0) + 1; if (per[h.b.id] <= maxPer) picked.push(h); });
     books.forEach(b => { if (!b.summary && !per[b.id]) (texts[b.id] || []).slice(0, 2).forEach(p => picked.push({ b, p, first: 0 })); });
-    const snip = (h) => { const t = h.p.t; if (t.length <= 2200) return t; const st = Math.max(0, Math.min(t.length - 2200, (h.first || 0) - 600)); return (st ? '…' : '') + t.slice(st, st + 2200) + '…'; };
+    const snip = (h) => { const t = h.p.t; if (t.length <= (small ? 900 : 2200)) return t; const st = Math.max(0, Math.min(t.length - (small ? 900 : 2200), (h.first || 0) - 600)); return (st ? '…' : '') + t.slice(st, st + (small ? 900 : 2200)) + '…'; };
     const stL = (id) => (LIB_STATUS.find(x => x[0] === id) || LIB_STATUS[0])[1];
     const list = books.map(b => ({ id: b.id, titel: b.title, autor: b.author || undefined, sprache: b.lang, lesestatus: stL(b.status), seitenangabe: b.unit, zusammenfassung: cut(b.summary, 1500) || undefined, kernideen: (b.ideas || []).length ? b.ideas.map(x => cut(x, 300)) : undefined, zitate: (b.quotes || []).length ? b.quotes.slice(0, 20).map(x => cut(x.text, 300) + (x.page ? ' (' + x.page + ')' : '')) : undefined }));
     return [
@@ -6427,7 +6436,7 @@ class Component extends DCLogic {
       lbNoText: noText, lbNoTextMsg: isPdf ? 'Kein Text gefunden. Bei gescannten PDFs kann die AI den Inhalt nicht lesen. Zusammenfassung, Ideen und Zitate kannst du selbst eintragen.' : 'In dieser Datei wurde kein Text gefunden. Zusammenfassung, Ideen und Zitate kannst du selbst eintragen.',
       lbSummary: b.summary || '', setLbSummary: (e) => edit({ summary: e.target.value }),
       lbGenLabel: busy ? 'Liest das Buch …' : (b.summary ? 'Neu erstellen' : 'Mit AI erstellen'), lbCantGen: busy || noText, lbGenOpacity: busy || noText ? '.5' : '1',
-      lbGen: () => this.libGenerate(b.id, false), lbGenErr: gen[b.id] === 'err',
+      lbGen: () => this.libGenerate(b.id, false), lbGenErr: gen[b.id] === 'err', lbGenWhy: ((s.libGenWhy || {})[b.id] || '').replace(/^Error:\s*/, ''), lbGenHasWhy: !!(s.libGenWhy || {})[b.id],
       lbIdeas: (b.ideas || []).map((t, i) => ({
         text: t,
         set: (e) => { const cur = this.libBook(b.id); edit({ ideas: cur.ideas.map((x, k) => k === i ? e.target.value : x) }); },
@@ -7285,12 +7294,21 @@ class Component extends DCLogic {
   aiPick(heavy) {
     const c = this.aiCfg(), here = !!(window.claude && window.claude.complete);
     if (heavy && c.heavyClaude && c.claudeKey && c.provider !== 'here') return 'claude';
+    /* book work needs long context: Groq's free tier caps a request at a few thousand
+       tokens, so heavy calls move to Gemini when a Gemini key is there */
+    if (heavy && c.provider === 'groq' && c.geminiKey) return 'gemini';
     if (c.provider !== 'auto') return c.provider;
     if (here) return 'here';
     if (c.geminiKey) return 'gemini';
     if (c.claudeKey) return 'claude';
     if (c.groqKey) return 'groq';
     return 'none';
+  }
+
+  /* rough input budget in characters per provider (≈ 4 chars per token) */
+  llmBudget(heavy) {
+    const p = this.aiPick(!!heavy);
+    return p === 'groq' ? 14000 : p === 'gemini' ? 400000 : 90000;
   }
 
   llmText(content) {
@@ -7359,7 +7377,10 @@ class Component extends DCLogic {
     }
     if (p === 'groq') {
       if (!c.groqKey) throw new Error('Kein Groq-Key hinterlegt.');
-      const req = { model: c.groqModel || 'openai/gpt-oss-120b', max_tokens: b.max_tokens || 1200, messages: (sys ? [{ role: 'system', content: sys }] : []).concat(msgs.map(m => ({ role: m.role, content: m.text }))) };
+      const room = 14000 - msgs.reduce((n, m) => n + m.text.length, 0);
+      let gsys = sys;
+      if (gsys && gsys.length > Math.max(3000, room)) { const keep = Math.max(3000, room); gsys = gsys.slice(0, Math.floor(keep * 0.55)) + '\n…\n' + gsys.slice(-Math.floor(keep * 0.45)); }
+      const req = { model: c.groqModel || 'openai/gpt-oss-120b', max_tokens: b.max_tokens || 1200, messages: (gsys ? [{ role: 'system', content: gsys }] : []).concat(msgs.map(m => ({ role: m.role, content: m.text }))) };
       if (tools.length) {
         req.tools = tools.map(t => ({ type: 'function', function: { name: t.name, description: t.description || t.name, parameters: t.input_schema } }));
         if (forced) req.tool_choice = { type: 'function', function: { name: forced } };
